@@ -1,0 +1,157 @@
+:root,
+[data-theme="dark"],
+html.dark {
+  /* Color Palette - Very Dark Navy/Black (Default) */
+  --bg-primary: #050811;
+  --bg-secondary: #090e1a;
+  --bg-tertiary: #0e1526;
+  --bg-gradient: 
+    radial-gradient(ellipse 75% 45% at 50% -15%, rgba(25, 135, 84, 0.12), transparent 70%),
+    radial-gradient(ellipse 60% 35% at 90% 12%, rgba(13, 202, 240, 0.05), transparent 60%),
+    radial-gradient(ellipse 55% 40% at 10% 45%, rgba(25, 135, 84, 0.06), transparent 60%);
+
+  /* Glass Surface Tokens (0.05 - 0.10) */
+  --glass-bg-subtle: rgba(255, 255, 255, 0.05);
+  --glass-bg-base: rgba(255, 255, 255, 0.07);
+  --glass-bg-elevated: rgba(255, 255, 255, 0.10);
+  
+  /* Borders (0.10 - 0.15) */
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-hover: rgba(255, 255, 255, 0.18);
+  --glass-border-focus: rgba(25, 135, 84, 0.6);
+
+  /* Subtle Shadows */
+  --glass-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.25);
+  --glass-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --glass-shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.45);
+  --glass-shadow-accent: 0 8px 24px -4px rgba(25, 135, 84, 0.28);
+
+  /* Text & Hierarchy */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  /* Component specifics */
+  --card-bg: rgba(255, 255, 255, 0.06);
+  --card-body-bg: rgba(255, 255, 255, 0.03);
+  --nav-bg: rgba(5, 8, 17, 0.80);
+  --footer-bg: rgba(5, 8, 17, 0.90);
+  --input-bg: rgba(255, 255, 255, 0.06);
+  --input-border: rgba(255, 255, 255, 0.12);
+  --kbd-bg: rgba(255, 255, 255, 0.06);
+  --badge-default-bg: rgba(255, 255, 255, 0.06);
+  --badge-default-border: rgba(255, 255, 255, 0.12);
+  --tag-bg: rgba(255, 255, 255, 0.05);
+  --tag-border: rgba(255, 255, 255, 0.08);
+  --skeleton-bg: rgba(255, 255, 255, 0.06);
+  --state-container-bg: rgba(255, 255, 255, 0.03);
+
+  /* Badge tokens - Dark Mode (Glowing, High Contrast on Dark) */
+  --badge-accent-bg: rgba(25, 135, 84, 0.22);
+  --badge-accent-text: #20c997;
+  --badge-accent-border: rgba(32, 201, 151, 0.40);
+
+  --badge-success-bg: rgba(25, 135, 84, 0.22);
+  --badge-success-text: #20c997;
+  --badge-success-border: rgba(32, 201, 151, 0.40);
+
+  --badge-warning-bg: rgba(255, 193, 7, 0.18);
+  --badge-warning-text: #ffc107;
+  --badge-warning-border: rgba(255, 193, 7, 0.40);
+
+  --badge-info-bg: rgba(13, 202, 240, 0.18);
+  --badge-info-text: #0dcaf0;
+  --badge-info-border: rgba(13, 202, 240, 0.40);
+}
+
+[data-theme="light"],
+html.light {
+  /* Color Palette - Cool Light Gray/Slate (Light Mode) */
+  --bg-primary: #f4f6fa;
+  --bg-secondary: #e9eef6;
+  --bg-tertiary: #dfe5f0;
+  --bg-gradient: 
+    radial-gradient(ellipse 75% 45% at 50% -15%, rgba(25, 135, 84, 0.10), transparent 70%),
+    radial-gradient(ellipse 60% 35% at 90% 12%, rgba(13, 202, 240, 0.06), transparent 60%),
+    radial-gradient(ellipse 55% 40% at 10% 45%, rgba(25, 135, 84, 0.05), transparent 60%);
+
+  /* Glass Surface Tokens for Light Mode (Frosted glass with high contrast) */
+  --glass-bg-subtle: rgba(255, 255, 255, 0.65);
+  --glass-bg-base: rgba(255, 255, 255, 0.78);
+  --glass-bg-elevated: rgba(255, 255, 255, 0.90);
+  
+  /* Borders for Light Mode */
+  --glass-border: rgba(15, 23, 42, 0.09);
+  --glass-border-hover: rgba(25, 135, 84, 0.40);
+  --glass-border-focus: rgba(25, 135, 84, 0.60);
+
+  /* Subtle Shadows for Light Mode */
+  --glass-shadow-sm: 0 4px 16px -2px rgba(15, 23, 42, 0.06);
+  --glass-shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.09);
+  --glass-shadow-lg: 0 16px 36px -6px rgba(15, 23, 42, 0.12);
+  --glass-shadow-accent: 0 8px 24px -4px rgba(25, 135, 84, 0.20);
+
+  /* Text & Hierarchy for Light Mode (High Contrast WCAG AA/AAA) */
+  --text-primary: #0f172a;   /* Slate 900 */
+  --text-secondary: #334155; /* Slate 700 */
+  --text-muted: #64748b;     /* Slate 500 */
+  --text-dim: #94a3b8;       /* Slate 400 */
+
+  /* Component specifics for Light Mode */
+  --card-bg: rgba(255, 255, 255, 0.80);
+  --card-body-bg: rgba(255, 255, 255, 0.60);
+  --nav-bg: rgba(244, 246, 250, 0.85);
+  --footer-bg: rgba(233, 238, 246, 0.92);
+  --input-bg: rgba(255, 255, 255, 0.85);
+  --input-border: rgba(15, 23, 42, 0.12);
+  --kbd-bg: rgba(15, 23, 42, 0.06);
+  --badge-default-bg: rgba(15, 23, 42, 0.06);
+  --badge-default-border: rgba(15, 23, 42, 0.10);
+  --tag-bg: rgba(15, 23, 42, 0.05);
+  --tag-border: rgba(15, 23, 42, 0.08);
+  --skeleton-bg: rgba(15, 23, 42, 0.08);
+  --state-container-bg: rgba(15, 23, 42, 0.03);
+
+  /* Badge tokens - Light Mode (Crisp, High Contrast Colors on Pastel Frosted Glass) */
+  --badge-accent-bg: rgba(25, 135, 84, 0.12);
+  --badge-accent-text: #0f5132; /* Deep forest green - WCAG AAA */
+  --badge-accent-border: rgba(25, 135, 84, 0.30);
+
+  --badge-success-bg: rgba(25, 135, 84, 0.12);
+  --badge-success-text: #0f5132;
+  --badge-success-border: rgba(25, 135, 84, 0.30);
+
+  --badge-warning-bg: rgba(255, 193, 7, 0.20);
+  --badge-warning-text: #664d03; /* Deep warm amber brown - WCAG AAA */
+  --badge-warning-border: rgba(255, 193, 7, 0.40);
+
+  --badge-info-bg: rgba(13, 202, 240, 0.18);
+  --badge-info-text: #055160; /* Deep teal cyan - WCAG AAA */
+  --badge-info-border: rgba(13, 202, 240, 0.32);
+}
+
+:root {
+  /* Common Tokens across themes */
+  /* Backdrop Blur (12 - 24px) */
+  --blur-subtle: 12px;
+  --blur-base: 16px;
+  --blur-strong: 24px;
+
+  /* Accent Colors - Hijau Bootstrap (#198754) */
+  --accent-primary: #198754;
+  --accent-primary-hover: #157347;
+  --accent-primary-light: #20c997;
+  --accent-primary-subtle: rgba(25, 135, 84, 0.18);
+  --accent-secondary: #0dcaf0; /* Bootstrap cyan */
+  --accent-star: #ffc107;      /* Bootstrap amber warning */
+  --accent-danger: #dc3545;    /* Bootstrap danger */
+
+  /* Border Radius (16 - 24px) */
+  --radius-sm: 0.5rem;    /* 8px */
+  --radius-md: 1rem;      /* 16px */
+  --radius-lg: 1.125rem;  /* 18px */
+  --radius-xl: 1.25rem;   /* 20px */
+  --radius-2xl: 1.5rem;   /* 24px */
+  --radius-full: 9999px;
+}

@@ -1,0 +1,181 @@
+@import "tailwindcss";
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
+@import "./lib/styles/tokens.css";
+
+/* Base Resets & Global Theme */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Inter', 'Geist', 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    scroll-behavior: smooth;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: var(--bg-primary);
+    background-image: var(--bg-gradient);
+    background-attachment: fixed;
+    color: var(--text-primary);
+  }
+
+  /* Custom glass scrollbar */
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    opacity: 0.3;
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+  }
+
+  /* Focus ring using Bootstrap Green */
+  :focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+}
+
+/* Badge Variants System (CSS Variable Driven for 100% Theme Reactivity) */
+.badge-accent {
+  background-color: var(--badge-accent-bg);
+  color: var(--badge-accent-text);
+  border-color: var(--badge-accent-border);
+  font-weight: 600;
+}
+
+.badge-default {
+  background-color: var(--badge-default-bg);
+  color: var(--text-secondary);
+  border-color: var(--badge-default-border);
+  font-weight: 500;
+}
+
+.badge-success {
+  background-color: var(--badge-success-bg);
+  color: var(--badge-success-text);
+  border-color: var(--badge-success-border);
+  font-weight: 600;
+}
+
+.badge-warning {
+  background-color: var(--badge-warning-bg);
+  color: var(--badge-warning-text);
+  border-color: var(--badge-warning-border);
+  font-weight: 600;
+}
+
+.badge-info {
+  background-color: var(--badge-info-bg);
+  color: var(--badge-info-text);
+  border-color: var(--badge-info-border);
+  font-weight: 600;
+}
+
+.badge-outline {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border-color: var(--glass-border);
+  font-weight: 500;
+}
+
+/* Glassmorphism Classes (Consistent in both Dark and Light themes) */
+.glass-panel {
+  background: var(--glass-bg-base);
+  backdrop-filter: blur(var(--blur-base));
+  -webkit-backdrop-filter: blur(var(--blur-base));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-sm);
+  border-radius: var(--radius-xl);
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glass-panel-subtle {
+  background: var(--glass-bg-subtle);
+  backdrop-filter: blur(var(--blur-subtle));
+  -webkit-backdrop-filter: blur(var(--blur-subtle));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.glass-panel-elevated {
+  background: var(--glass-bg-elevated);
+  backdrop-filter: blur(var(--blur-strong));
+  -webkit-backdrop-filter: blur(var(--blur-strong));
+  border: 1px solid var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-md);
+  border-radius: var(--radius-2xl);
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glass-interactive {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.25s ease,
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.glass-interactive:hover {
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-md);
+}
+
+/* Modal and Detail Panel glass effect classes */
+.glass-modal {
+  background: var(--glass-bg-elevated);
+  backdrop-filter: blur(var(--blur-strong));
+  -webkit-backdrop-filter: blur(var(--blur-strong));
+  border: 1px solid var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-lg);
+  border-radius: var(--radius-2xl);
+}
+
+.glass-detail-panel {
+  background: var(--glass-bg-elevated);
+  backdrop-filter: blur(var(--blur-strong));
+  -webkit-backdrop-filter: blur(var(--blur-strong));
+  border: 1px solid var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-md);
+  border-radius: var(--radius-xl);
+}
+
+/* Glass filter bar */
+.glass-filter {
+  background: var(--glass-bg-subtle);
+  backdrop-filter: blur(var(--blur-subtle));
+  -webkit-backdrop-filter: blur(var(--blur-subtle));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+}
+
+/* Poster is kept 100% solid & normal for maximum visual focus */
+.poster-solid {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-secondary);
+}
+
+.poster-solid img {
+  opacity: 1 !important;
+  filter: none !important;
+  display: block;
+}
