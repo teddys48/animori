@@ -13,16 +13,73 @@
     MOCK_AIRING_ANIME,
     MOCK_UPCOMING_ANIME
   } from '../lib/data/mockAnime';
+  import { getTopAnime, getSeasonNow, getUpcomingAnime } from '../lib/api/anime';
+  import type { AnimeItem } from '../lib/types/anime';
 
-  // State toggle to demonstrate future states (Loading, Empty, Error) in Phase 1
+  // State toggle to demonstrate UI states (Loading, Empty, Error) in Phase 1 & 2
   let previewState = $state<'normal' | 'loading' | 'empty' | 'error'>('normal');
 
-  function scrollToSection(id: string) {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+  // Homepage sections initialized with baseline data for instant render and offline resilience
+  let popularList = $state<AnimeItem[]>(MOCK_POPULAR_ANIME.slice(0, 6));
+  let airingList = $state<AnimeItem[]>(MOCK_AIRING_ANIME.slice(0, 6));
+  let upcomingList = $state<AnimeItem[]>(MOCK_UPCOMING_ANIME.slice(0, 6));
+
+  let airingSeasonBadge = $state('Season 2025');
+
+  $effect(() => {
+    document.title = 'Animori — Anime Discovery & Information';
+  });
+
+  // Staggered sequential fetch to strictly respect Jikan's 3 req/sec rate limit
+  $effect(() => {
+    let cancelled = false;
+
+    async function loadRealData() {
+      // 1. Fetch Popular Anime from Jikan v4
+      try {
+        const top = await getTopAnime(undefined, 1);
+        if (!cancelled && top.items.length > 0) {
+          popularList = top.items.slice(0, 6);
+        }
+      } catch (err) {
+        if (import.meta.env.DEV) console.warn('[animori] Jikan popular fetch:', err);
+      }
+
+      // Respect Jikan's rate limit: 350ms pause before next call
+      await new Promise((r) => setTimeout(r, 350));
+      if (cancelled) return;
+
+      // 2. Fetch Currently Airing Anime from Jikan v4
+      try {
+        const airing = await getSeasonNow(1);
+        if (!cancelled && airing.items.length > 0) {
+          airingList = airing.items.slice(0, 6);
+        }
+      } catch (err) {
+        if (import.meta.env.DEV) console.warn('[animori] Jikan airing fetch:', err);
+      }
+
+      // Respect Jikan's rate limit: 350ms pause before next call
+      await new Promise((r) => setTimeout(r, 350));
+      if (cancelled) return;
+
+      // 3. Fetch Upcoming Anime from Jikan v4
+      try {
+        const upcoming = await getUpcomingAnime(1);
+        if (!cancelled && upcoming.items.length > 0) {
+          upcomingList = upcoming.items.slice(0, 6);
+        }
+      } catch (err) {
+        if (import.meta.env.DEV) console.warn('[animori] Jikan upcoming fetch:', err);
+      }
     }
-  }
+
+    void loadRealData();
+
+    return () => {
+      cancelled = true;
+    };
+  });
 </script>
 
 <div class="space-y-16 sm:space-y-20 pb-16">
@@ -102,10 +159,10 @@
               <Button
                 variant="primary"
                 size="md"
-                onclick={() => scrollToSection('popular')}
+                href="/anime"
               >
                 <svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
                 Explore Catalog
               </Button>
@@ -113,14 +170,14 @@
               <Button
                 variant="glass"
                 size="md"
-                onclick={() => scrollToSection('airing')}
+                href="/seasonal"
               >
                 View Currently Airing
               </Button>
             </div>
           </div>
 
-          <!-- Right Column: Poster Card Preview (Solid & Normal so it stays focused) -->
+          <!-- Right Column: Poster Card Preview -->
           <div class="hidden lg:flex lg:col-span-4 justify-center items-center">
             <div class="relative w-64 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border border-[var(--glass-border-hover)] bg-[#090e1a] transform rotate-1 hover:rotate-0 transition-transform duration-300">
               <img
@@ -141,7 +198,7 @@
     </Container>
   </section>
 
-  <!-- ==================== UI STATE PREVIEW TOGGLE (PHASE 1 FEATURE) ==================== -->
+  <!-- ==================== UI STATE PREVIEW TOGGLE (PHASE 1 & 2 FEATURE) ==================== -->
   <section class="border-y border-[var(--glass-border)] py-4 bg-[var(--state-container-bg)] transition-colors duration-200">
     <Container>
       <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -150,7 +207,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
-          <span class="font-medium text-[var(--text-primary)]">Phase 1 UI Component States:</span>
+          <span class="font-medium text-[var(--text-primary)]">UI Component States:</span>
           <span>Switch view to inspect built-in states</span>
         </div>
 
@@ -195,7 +252,7 @@
       <section aria-label="Loading skeleton preview">
         <SectionHeader
           title="Loading Skeleton State"
-          subtitle="Smooth placeholder skeletons used while fetching data in Phase 2"
+          subtitle="Smooth placeholder skeletons used while fetching data from Jikan"
           badge="Demo View"
         />
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
@@ -209,7 +266,7 @@
       <section aria-label="Empty state preview" class="py-8">
         <EmptyState
           title="No Seasonal Anime Matches"
-          description="We couldn't find any anime in the current mock database matching your active genre and year filters."
+          description="We couldn't find any anime in the current database matching your active genre and year filters."
           actionText="Reset All Filters"
           onaction={() => (previewState = 'normal')}
         />
@@ -232,11 +289,11 @@
           subtitle="Top rated masterpieces of all time"
           badge="Top Rated"
           actionText="View All"
-          actionHref="#popular"
+          actionHref="/top"
         />
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
-          {#each MOCK_POPULAR_ANIME as anime (anime.id)}
+          {#each popularList as anime (anime.id)}
             <AnimeCard {anime} />
           {/each}
         </div>
@@ -247,14 +304,14 @@
         <SectionHeader
           title="Currently Airing"
           subtitle="Broadcasts and weekly simulcasts this season"
-          badge="Season 2025"
+          badge={airingSeasonBadge}
           badgeVariant="success"
           actionText="View Schedule"
-          actionHref="#airing"
+          actionHref="/seasonal"
         />
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
-          {#each MOCK_AIRING_ANIME as anime (anime.id)}
+          {#each airingList as anime (anime.id)}
             <AnimeCard {anime} />
           {/each}
         </div>
@@ -268,11 +325,11 @@
           badge="Anticipated"
           badgeVariant="info"
           actionText="View Calendar"
-          actionHref="#upcoming"
+          actionHref="/upcoming"
         />
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
-          {#each MOCK_UPCOMING_ANIME as anime (anime.id)}
+          {#each upcomingList as anime (anime.id)}
             <AnimeCard {anime} />
           {/each}
         </div>

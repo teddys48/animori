@@ -11,7 +11,7 @@
   let { activeRoute = 'Home', children }: Props = $props();
 </script>
 
-<div class="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] selection:bg-[#198754] selection:text-white transition-colors duration-200">
+<div class="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] selection:bg-[#198754] selection:text-white transition-colors duration-200 overflow-x-hidden w-full">
   <!-- Top Global Navigation -->
   <Navbar {activeRoute} />
 

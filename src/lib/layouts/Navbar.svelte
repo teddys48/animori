@@ -2,6 +2,7 @@
   import Input from '../components/ui/Input.svelte';
   import Badge from '../components/ui/Badge.svelte';
   import ThemeToggle from '../components/ui/ThemeToggle.svelte';
+  import { router, buildHref } from '../router/router.svelte';
 
   interface Props {
     activeRoute?: string;
@@ -14,13 +15,31 @@
 
   const navLinks = [
     { name: 'Home', href: '/' },
-    { name: 'Anime', href: '#popular' },
-    { name: 'Top', href: '#popular' },
-    { name: 'Seasonal', href: '#airing' }
+    { name: 'Anime', href: '/anime' },
+    { name: 'Top', href: '/top' },
+    { name: 'Seasonal', href: '/seasonal' },
+    { name: 'Upcoming', href: '/upcoming' }
   ];
 
   function toggleMobileMenu() {
     isMobileMenuOpen = !isMobileMenuOpen;
+  }
+
+  function handleSearch(e?: Event) {
+    if (e) e.preventDefault();
+    const q = searchQuery.trim();
+    if (q) {
+      router.navigate(buildHref('/anime', { q, page: 1 }));
+    } else {
+      router.navigate('/anime');
+    }
+    isMobileMenuOpen = false;
+  }
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   }
 </script>
 
@@ -48,19 +67,21 @@
           <a
             href={link.href}
             class="px-3.5 py-1.5 rounded-xl transition-all duration-200 {activeRoute === link.name ? 'text-[var(--text-primary)] bg-[var(--glass-bg-elevated)] font-semibold border border-[var(--glass-border-hover)] shadow-xs' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg-subtle)]'}"
+            aria-current={activeRoute === link.name ? 'page' : undefined}
           >
             {link.name}
           </a>
         {/each}
       </nav>
 
-      <!-- Search UI Placeholder (Phase 1 placeholder) -->
+      <!-- Global Search Input in Navbar -->
       <div class="hidden sm:flex items-center flex-1 max-w-xs md:max-w-sm lg:max-w-md mx-2">
-        <div class="w-full relative">
+        <form onsubmit={handleSearch} class="w-full relative">
           <Input
-            placeholder="Search anime, genres, studios... (Phase 2)"
+            placeholder="Search anime titles... (Press Enter)"
             bind:value={searchQuery}
-            aria-label="Search anime placeholder"
+            onkeydown={handleKeyDown}
+            aria-label="Search anime"
             class="py-2 text-xs"
           >
             {#snippet leadingIcon()}
@@ -69,18 +90,27 @@
               </svg>
             {/snippet}
             {#snippet trailingIcon()}
-              <kbd class="hidden lg:inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-mono text-[var(--text-muted)] bg-[var(--kbd-bg)] border border-[var(--glass-border)] rounded-lg">
-                ⌘K
-              </kbd>
+              {#if searchQuery}
+                <button
+                  type="button"
+                  onclick={() => (searchQuery = '')}
+                  class="p-0.5 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+                  aria-label="Clear query"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              {/if}
             {/snippet}
           </Input>
-        </div>
+        </form>
       </div>
 
       <!-- Action area: Status Badge + Theme Toggle -->
       <div class="hidden sm:flex items-center gap-2.5">
         <Badge variant="accent" size="sm">
-          Phase 1 UI Shell
+          Phase 2 Discovery
         </Badge>
         <ThemeToggle />
       </div>
@@ -113,10 +143,11 @@
   {#if isMobileMenuOpen}
     <div class="sm:hidden border-t border-[var(--glass-border)] bg-[var(--nav-bg)] backdrop-blur-2xl px-4 pt-3 pb-6 space-y-4 shadow-lg">
       <!-- Search Input on mobile -->
-      <div class="w-full">
+      <form onsubmit={handleSearch} class="w-full">
         <Input
-          placeholder="Search anime... (Phase 2)"
+          placeholder="Search anime titles..."
           bind:value={searchQuery}
+          onkeydown={handleKeyDown}
           aria-label="Search anime placeholder mobile"
           class="py-2 text-xs"
         >
@@ -126,7 +157,7 @@
             </svg>
           {/snippet}
         </Input>
-      </div>
+      </form>
 
       <!-- Nav Links -->
       <nav class="flex flex-col space-y-1.5" aria-label="Mobile Navigation">
@@ -135,6 +166,7 @@
             href={link.href}
             onclick={() => (isMobileMenuOpen = false)}
             class="px-3.5 py-2.5 rounded-2xl text-base font-medium transition-colors {activeRoute === link.name ? 'bg-[#198754]/20 text-[#198754] dark:text-[#20c997] font-semibold border border-[#198754]/30' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg-subtle)]'}"
+            aria-current={activeRoute === link.name ? 'page' : undefined}
           >
             {link.name}
           </a>
@@ -142,8 +174,8 @@
       </nav>
 
       <div class="pt-3 border-t border-[var(--glass-border)] flex items-center justify-between">
-        <span class="text-xs text-[var(--text-muted)]">Animori Foundation</span>
-        <Badge variant="accent" size="sm">Phase 1</Badge>
+        <span class="text-xs text-[var(--text-muted)]">Animori Discovery</span>
+        <Badge variant="accent" size="sm">Phase 2</Badge>
       </div>
     </div>
   {/if}

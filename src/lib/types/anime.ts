@@ -40,7 +40,7 @@ export interface AnimeItem {
   /** Optional wide banner image (not provided by Jikan list endpoints). */
   banner?: string;
   type?: AnimeType;
-  episodes: number | null;
+  episodes?: number | null;
   /** MAL score (0–10). `null` when not yet scored. */
   score: number | null;
   scoredBy?: number | null;
@@ -53,6 +53,7 @@ export interface AnimeItem {
   aired?: AnimeAired;
   /** Short aired label for compact UI, e.g. "Jan 2027". */
   airedShort?: string;
+  airingDate?: string;
   duration?: string | null;
   synopsis?: string;
   genres: string[];
