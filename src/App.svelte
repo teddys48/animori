@@ -31,9 +31,9 @@
     if (p === '/anime' || p === '/anime/') {
       return { name: 'Anime', component: Anime };
     }
-    const detailMatch = p.match(/^\/anime\/(\d+)\/?$/);
+    const detailMatch = p.match(/^\/anime\/([^/]+)\/?$/);
     if (detailMatch) {
-      return { name: 'Anime', component: AnimeDetail, props: { id: Number(detailMatch[1]) } };
+      return { name: 'Anime', component: AnimeDetail, props: { id: detailMatch[1] } };
     }
     if (p === '/top' || p === '/top/') {
       return { name: 'Top', component: Top };

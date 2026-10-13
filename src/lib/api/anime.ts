@@ -7,6 +7,7 @@
  * and handles pagination (limit/offset to 1-based page numbers).
  */
 import { kitsu } from './kitsu';
+import { KitsuError } from './errors';
 import type {
   KitsuAnimeAttributes,
   KitsuAnimeResource,
@@ -18,7 +19,10 @@ import type {
   AnimeSeason,
   AnimeStatus,
   AnimeType,
-  Paginated
+  CharacterItem,
+  Paginated,
+  RelatedAnimeItem,
+  VoiceActor
 } from '../types/anime';
 
 /**
@@ -58,18 +62,84 @@ const STATUS_MAP: Record<string, AnimeStatus> = {
   unapproved: 'Not yet aired'
 };
 
+const ROLE_MAP: Record<string, string> = {
+  sequel: 'Sequel',
+  prequel: 'Prequel',
+  side_story: 'Side Story',
+  parent_story: 'Parent Story',
+  summary: 'Summary',
+  full_story: 'Full Story',
+  alternative_version: 'Alternative Version',
+  alternative_setting: 'Alternative Setting',
+  spinoff: 'Spin-Off',
+  adaptation: 'Adaptation',
+  other: 'Other'
+};
+
+const LOCALE_MAP: Record<string, string> = {
+  ja_jp: 'Japanese',
+  ja: 'Japanese',
+  en: 'English',
+  en_us: 'English',
+  es: 'Spanish',
+  fr: 'French',
+  de: 'German',
+  it: 'Italian',
+  pt: 'Portuguese',
+  pt_br: 'Portuguese (BR)',
+  ko: 'Korean',
+  zh: 'Chinese',
+  ru: 'Russian',
+  hu: 'Hungarian'
+};
+
 const monthFormatter = new Intl.DateTimeFormat('en-US', {
   month: 'short',
   year: 'numeric',
   timeZone: 'UTC'
 });
 
+const fullDateFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC'
+});
+
+export function formatDateString(dateStr?: string | null): string | null {
+  if (!dateStr) return null;
+  try {
+    const parts = dateStr.split('-');
+    const year = parseInt(parts[0], 10);
+    const month = parts.length > 1 ? parseInt(parts[1], 10) : 1;
+    const day = parts.length > 2 ? parseInt(parts[2], 10) : 1;
+    if (year) {
+      return fullDateFormatter.format(Date.UTC(year, month - 1, day));
+    }
+  } catch {
+    // Return original string if formatting fails
+  }
+  return dateStr;
+}
+
+export function formatRelationshipRole(raw?: string | null): string {
+  if (!raw) return 'Related';
+  const clean = raw.toLowerCase().trim();
+  return ROLE_MAP[clean] || raw.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+export function formatLocale(code?: string | null): string {
+  if (!code) return 'Unknown';
+  const clean = code.toLowerCase().replace('-', '_');
+  return LOCALE_MAP[clean] || code.toUpperCase();
+}
+
 export function resolvePoster(attributes: KitsuAnimeAttributes): string {
   const images = attributes.posterImage;
   if (!images) return FALLBACK_POSTER;
   return (
-    images.medium ||
     images.large ||
+    images.medium ||
     images.small ||
     images.original ||
     images.tiny ||
@@ -136,14 +206,31 @@ export function mapKitsuAnime(
   const type = attr.subtype ? SUBTYPE_MAP[attr.subtype] : undefined;
   const status = attr.status ? STATUS_MAP[attr.status] : undefined;
 
-  // Extract genres if available from includedMap
+  // Extract genres & categories if available from includedMap
   const genres: string[] = [];
-  if (includedMap && resource.relationships?.genres?.data) {
-    const relData = resource.relationships.genres.data;
-    const genreIds = Array.isArray(relData) ? relData : [relData];
-    for (const g of genreIds) {
-      const match = includedMap.get(`genres:${g.id}`);
-      if (match?.attributes?.name) genres.push(match.attributes.name);
+  const categories: string[] = [];
+  if (includedMap) {
+    if (resource.relationships?.genres?.data) {
+      const relData = resource.relationships.genres.data;
+      const genreIds = Array.isArray(relData) ? relData : [relData];
+      for (const g of genreIds) {
+        const match = includedMap.get(`genres:${g.id}`);
+        if (match?.attributes?.name && !genres.includes(match.attributes.name)) {
+          genres.push(match.attributes.name);
+        }
+      }
+    }
+
+    if (resource.relationships?.categories?.data) {
+      const relData = resource.relationships.categories.data;
+      const catIds = Array.isArray(relData) ? relData : [relData];
+      for (const c of catIds) {
+        const match = includedMap.get(`categories:${c.id}`);
+        const title = match?.attributes?.title || match?.attributes?.name;
+        if (title && !categories.includes(title)) {
+          categories.push(title);
+        }
+      }
     }
   }
 
@@ -155,6 +242,16 @@ export function mapKitsuAnime(
   let synopsis = (attr.synopsis || attr.description || '')
     .replace(/\s*\[Written by MAL Rewrite\]\s*$/i, '')
     .trim();
+
+  // Aired range label
+  const startDateFormatted = formatDateString(attr.startDate);
+  const endDateFormatted = formatDateString(attr.endDate);
+  let airedLabel: string | null = null;
+  if (startDateFormatted && endDateFormatted) {
+    airedLabel = `${startDateFormatted} to ${endDateFormatted}`;
+  } else if (startDateFormatted) {
+    airedLabel = `${startDateFormatted}`;
+  }
 
   return {
     id: resource.id,
@@ -173,14 +270,26 @@ export function mapKitsuAnime(
     members: attr.userCount ?? null,
     year: resolveYear(attr),
     status,
+    aired: {
+      from: attr.startDate || null,
+      to: attr.endDate || null,
+      label: airedLabel
+    },
     airedShort: resolveAiredShort(attr),
     duration: attr.episodeLength ? `${attr.episodeLength} min` : null,
+    episodeLength: attr.episodeLength ?? null,
+    totalLength: attr.totalLength ?? null,
     synopsis: synopsis || undefined,
     ageRating: attr.ageRating || null,
     ageRatingGuide: attr.ageRatingGuide || null,
     genres,
+    categories,
     studios: [],
-    url
+    url,
+    youtubeVideoId: attr.youtubeVideoId || null,
+    startDate: startDateFormatted,
+    endDate: endDateFormatted,
+    favoritesCount: attr.favoritesCount ?? null
   };
 }
 
@@ -189,7 +298,7 @@ function uniqueById(items: AnimeItem[]): AnimeItem[] {
   return items.filter((item) => (seen.has(item.id) ? false : (seen.add(item.id), true)));
 }
 
-function buildIncludedMap(included?: KitsuIncludedResource[]): Map<string, KitsuIncludedResource> {
+export function buildIncludedMap(included?: KitsuIncludedResource[]): Map<string, KitsuIncludedResource> {
   const map = new Map<string, KitsuIncludedResource>();
   if (!included) return map;
   for (const item of included) {
@@ -340,10 +449,193 @@ export async function getUpcomingAnime(page = 1): Promise<Paginated<AnimeItem>> 
   return toPaginated(res, page, PAGE_SIZE);
 }
 
-/** Get single anime details by ID from Kitsu */
+/**
+ * Validate anime resource ID. Must be positive integer.
+ */
+export function validateAnimeId(id: string | number): number {
+  const parsed = typeof id === 'number' ? id : parseInt(String(id).trim(), 10);
+  if (!Number.isInteger(parsed) || parsed <= 0 || !/^\d+$/.test(String(id).trim())) {
+    throw new KitsuError('bad-request', `Invalid anime ID "${id}". ID must be a positive integer.`);
+  }
+  return parsed;
+}
+
+/** Get single anime details by ID from Kitsu, with included genres and categories */
 export async function getAnime(id: string | number): Promise<AnimeItem> {
-  const res = await kitsu.getAnime(id);
-  return mapKitsuAnime(res);
+  const validId = validateAnimeId(id);
+  const res = await kitsu.getAnime(validId, 'genres,categories');
+  const incMap = buildIncludedMap(res.included);
+  return mapKitsuAnime(res.data, incMap);
+}
+
+/** Get characters and voice actors for an anime */
+export async function getAnimeCharacters(
+  id: string | number,
+  limit = 12
+): Promise<CharacterItem[]> {
+  const validId = validateAnimeId(id);
+  const res = await kitsu.getAnimeCharacters(validId, limit);
+  const incMap = buildIncludedMap(res.included);
+
+  const characters: CharacterItem[] = [];
+
+  for (const mediaChar of res.data) {
+    const charRel = mediaChar.relationships?.character?.data;
+    if (!charRel || Array.isArray(charRel)) continue;
+
+    const charResource = incMap.get(`characters:${charRel.id}`);
+    if (!charResource) continue;
+
+    const roleRaw = mediaChar.attributes?.role ?? 'supporting';
+    const role = roleRaw.toLowerCase() === 'main' ? 'Main' : 'Supporting';
+
+    const charAttr = charResource.attributes ?? {};
+    const name = charAttr.canonicalName || charAttr.names?.en || 'Unknown Character';
+    const nameJapanese = charAttr.names?.ja_jp || undefined;
+
+    // Resolve best character image
+    const charImgObj = charAttr.image;
+    let charImage: string | undefined;
+    if (charImgObj) {
+      charImage =
+        charImgObj.medium ||
+        charImgObj.large ||
+        charImgObj.original ||
+        charImgObj.small ||
+        undefined;
+    }
+
+    // Resolve voice actors from characterVoices relationship
+    const voiceActors: VoiceActor[] = [];
+    const voicesRel = mediaChar.relationships?.voices?.data;
+    const voiceEntries = Array.isArray(voicesRel) ? voicesRel : voicesRel ? [voicesRel] : [];
+
+    for (const vRel of voiceEntries) {
+      const voiceRes = incMap.get(`characterVoices:${vRel.id}`);
+      if (!voiceRes) continue;
+
+      const personRel = voiceRes.relationships?.person?.data;
+      if (!personRel || Array.isArray(personRel)) continue;
+
+      const personRes = incMap.get(`people:${personRel.id}`);
+      if (!personRes) continue;
+
+      const personAttr = personRes.attributes ?? {};
+      const personName = personAttr.name || 'Unknown Voice Actor';
+      const rawLocale = voiceRes.attributes?.locale;
+      const language = formatLocale(rawLocale);
+
+      const personImgObj = personAttr.image;
+      let personImage: string | undefined;
+      if (personImgObj) {
+        personImage =
+          personImgObj.medium ||
+          personImgObj.large ||
+          personImgObj.original ||
+          personImgObj.small ||
+          undefined;
+      }
+
+      voiceActors.push({
+        id: personRes.id,
+        name: personName,
+        image: personImage,
+        language,
+        locale: rawLocale
+      });
+    }
+
+    // Sort voice actors: Japanese first, then English, then others
+    voiceActors.sort((a, b) => {
+      const isAJa = a.locale?.startsWith('ja') ? 1 : 0;
+      const isBJa = b.locale?.startsWith('ja') ? 1 : 0;
+      if (isAJa !== isBJa) return isBJa - isAJa;
+
+      const isAEn = a.locale?.startsWith('en') ? 1 : 0;
+      const isBEn = b.locale?.startsWith('en') ? 1 : 0;
+      if (isAEn !== isBEn) return isBEn - isAEn;
+
+      return a.name.localeCompare(b.name);
+    });
+
+    characters.push({
+      id: charResource.id,
+      name,
+      nameJapanese,
+      image: charImage,
+      role,
+      voiceActors
+    });
+  }
+
+  return characters;
+}
+
+/** Get related anime from Kitsu media-relationships */
+export async function getAnimeRelated(
+  id: string | number,
+  limit = 20
+): Promise<RelatedAnimeItem[]> {
+  const validId = validateAnimeId(id);
+  const res = await kitsu.getAnimeMediaRelationships(validId, limit);
+  const incMap = buildIncludedMap(res.included);
+
+  const related: RelatedAnimeItem[] = [];
+
+  for (const relItem of res.data) {
+    const destRel = relItem.relationships?.destination?.data;
+    if (!destRel || Array.isArray(destRel)) continue;
+
+    // We only display anime destination items since they have an anime detail route
+    if (destRel.type !== 'anime') continue;
+
+    const destAnimeRes = incMap.get(`anime:${destRel.id}`) as KitsuAnimeResource | undefined;
+    if (!destAnimeRes) continue;
+
+    const destAttr = destAnimeRes.attributes ?? {};
+    const title = destAttr.canonicalTitle || destAttr.titles?.en || 'Unknown Anime';
+    const roleRaw = relItem.attributes?.role ?? 'other';
+    const role = formatRelationshipRole(roleRaw);
+
+    const type = destAttr.subtype ? SUBTYPE_MAP[destAttr.subtype] : undefined;
+    const year = resolveYear(destAttr);
+    const { score } = resolveScore(destAttr.averageRating);
+
+    related.push({
+      id: destAnimeRes.id,
+      role,
+      roleRaw,
+      destinationType: 'anime',
+      title,
+      poster: resolvePoster(destAttr),
+      type,
+      year,
+      score
+    });
+  }
+
+  return related;
+}
+
+/** Get more anime to explore based on category, excluding current anime */
+export async function getMoreAnimeToExplore(
+  category: string,
+  excludeId?: string | number,
+  limit = 6
+): Promise<AnimeItem[]> {
+  if (!category || !category.trim()) return [];
+  const res = await kitsu.listAnime({
+    filter: { categories: category.trim() },
+    sort: '-userCount',
+    limit: limit + 2
+  });
+  const incMap = buildIncludedMap(res.included);
+  const currentIdStr = excludeId ? String(excludeId) : null;
+
+  return res.data
+    .filter((item) => String(item.id) !== currentIdStr)
+    .slice(0, limit)
+    .map((item) => mapKitsuAnime(item, incMap));
 }
 
 /** Helper to derive a representative season label from anime items */

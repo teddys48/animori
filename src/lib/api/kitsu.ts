@@ -20,7 +20,9 @@ import type {
   KitsuListResponse,
   KitsuSingleResponse,
   KitsuListAnimeParams,
-  KitsuSearchParams
+  KitsuSearchParams,
+  KitsuMediaCharacterResource,
+  KitsuMediaRelationshipResource
 } from './types';
 
 /* ------------------------------------------------------------------ */
@@ -36,8 +38,6 @@ const RATE_LIMIT_COOLDOWN_MS = 2_000;
 const REQUEST_TIMEOUT_MS = 15_000;
 const CACHE_TTL_MS = 5 * 60_000;
 const MAX_CACHE_ENTRIES = 100;
-
-type QueryParamValue = string | number | boolean | undefined | null;
 
 /* ------------------------------------------------------------------ */
 /* Throttle: simple time-slot reservation                             */
@@ -229,13 +229,49 @@ function request<T>(path: string, params: Record<string, any>, validate: (body: 
 /* ------------------------------------------------------------------ */
 
 export const kitsu = {
-  /** GET /anime/{id} */
-  async getAnime(id: string | number): Promise<KitsuAnimeResource> {
-    const res = await request(`/anime/${id}`, {}, isSingleResponse);
+  /** GET /anime/{id} with optional include (e.g. 'genres,categories') */
+  async getAnime(
+    id: string | number,
+    include?: string
+  ): Promise<KitsuSingleResponse<KitsuAnimeResource>> {
+    const params: Record<string, any> = {};
+    if (include) params.include = include;
+    const res = await request(`/anime/${id}`, params, isSingleResponse);
     if (!isKitsuAnime(res.data)) {
       throw new KitsuError('malformed', 'Unexpected anime payload from Kitsu');
     }
-    return res.data;
+    return res as KitsuSingleResponse<KitsuAnimeResource>;
+  },
+
+  /** GET /anime/{id}/characters with character and voices.person */
+  async getAnimeCharacters(
+    id: string | number,
+    limit = 12
+  ): Promise<KitsuListResponse<KitsuMediaCharacterResource>> {
+    return request(
+      `/anime/${id}/characters`,
+      {
+        include: 'character,voices.person',
+        sort: 'role',
+        page: { limit }
+      },
+      isListResponse
+    ) as Promise<KitsuListResponse<KitsuMediaCharacterResource>>;
+  },
+
+  /** GET /anime/{id}/media-relationships with destination */
+  async getAnimeMediaRelationships(
+    id: string | number,
+    limit = 20
+  ): Promise<KitsuListResponse<KitsuMediaRelationshipResource>> {
+    return request(
+      `/anime/${id}/media-relationships`,
+      {
+        include: 'destination',
+        page: { limit }
+      },
+      isListResponse
+    ) as Promise<KitsuListResponse<KitsuMediaRelationshipResource>>;
   },
 
   /** GET /anime with filter[text] */

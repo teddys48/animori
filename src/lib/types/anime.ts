@@ -30,6 +30,35 @@ export interface AnimeAired {
   label: string | null;
 }
 
+export interface VoiceActor {
+  id: string;
+  name: string;
+  image?: string;
+  language?: string;
+  locale?: string;
+}
+
+export interface CharacterItem {
+  id: string;
+  name: string;
+  nameJapanese?: string;
+  image?: string;
+  role: 'Main' | 'Supporting' | string;
+  voiceActors: VoiceActor[];
+}
+
+export interface RelatedAnimeItem {
+  id: string;
+  role: string;
+  roleRaw: string;
+  destinationType: string;
+  title: string;
+  poster: string;
+  type?: AnimeType;
+  year?: number | null;
+  score?: number | null;
+}
+
 export interface AnimeItem {
   id: string | number;
   title: string;
@@ -57,13 +86,20 @@ export interface AnimeItem {
   airedShort?: string;
   airingDate?: string;
   duration?: string | null;
+  episodeLength?: number | null;
+  totalLength?: number | null;
   synopsis?: string;
   ageRating?: string | null;
   ageRatingGuide?: string | null;
   genres: string[];
+  categories?: string[];
   studios?: string[];
   /** Canonical Kitsu web page URL. */
   url?: string;
+  youtubeVideoId?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  favoritesCount?: number | null;
 }
 
 /** Normalized pagination metadata. */

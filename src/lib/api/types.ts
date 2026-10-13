@@ -110,7 +110,7 @@ export interface KitsuMeta {
   count?: number;
 }
 
-export interface KitsuListResponse<T = KitsuAnimeResource> {
+export interface KitsuListResponse<T = any> {
   data: T[];
   meta?: KitsuMeta;
   links?: KitsuPaginationLinks;
@@ -133,6 +133,39 @@ export interface KitsuErrorItem {
 
 export interface KitsuErrorResponse {
   errors?: KitsuErrorItem[];
+}
+
+/* ------------------------------------------------------------------ */
+/* Media Relationships & Characters                                   */
+/* ------------------------------------------------------------------ */
+
+export interface KitsuMediaRelationshipResource {
+  id: string;
+  type: 'mediaRelationships';
+  attributes: {
+    role: string;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+  relationships?: {
+    source?: KitsuRelationship;
+    destination?: KitsuRelationship;
+  };
+}
+
+export interface KitsuMediaCharacterResource {
+  id: string;
+  type: 'mediaCharacters';
+  attributes: {
+    role: string; // 'main' | 'supporting'
+    createdAt?: string;
+    updatedAt?: string;
+  };
+  relationships?: {
+    character?: KitsuRelationship;
+    voices?: KitsuRelationship;
+    media?: KitsuRelationship;
+  };
 }
 
 /* ------------------------------------------------------------------ */

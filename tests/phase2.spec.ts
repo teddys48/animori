@@ -86,12 +86,12 @@ test.describe('Animori Phase 2 — Kitsu API & Anime Discovery', () => {
     await expect(page.getByRole('heading', { name: 'Top Movies' })).toBeVisible();
   });
 
-  test('Prepared detail route renders for /anime/:id', async ({ page }) => {
-    await page.goto('/anime/52991');
+  test('Detail route renders for /anime/:id', async ({ page }) => {
+    await page.goto('/anime/1');
 
-    await expect(page).toHaveURL('/anime/52991');
-    await expect(page.getByText('Phase 3 Preview')).toBeVisible();
+    await expect(page).toHaveURL('/anime/1');
     await expect(page.getByRole('link', { name: 'Back to Catalog' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Cowboy Bebop', level: 1 })).toBeVisible();
   });
 
   test('404 Not Found route renders for unknown paths', async ({ page }) => {
