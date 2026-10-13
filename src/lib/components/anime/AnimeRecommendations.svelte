@@ -32,7 +32,7 @@
     </div>
 
     {#if loading}
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-4">
         {#each Array(6) as _}
           <AnimeCardSkeleton />
         {/each}
@@ -42,7 +42,7 @@
         Additional exploration titles could not be loaded at this time.
       </div>
     {:else}
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-4">
         {#each items as anime (anime.id)}
           <AnimeCard {anime} />
         {/each}

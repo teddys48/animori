@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { AnimeItem } from '../../types/anime';
   import { FALLBACK_POSTER } from '../../api/anime';
-  import Badge from '../ui/Badge.svelte';
 
   interface Props {
     anime: AnimeItem;
@@ -27,6 +26,25 @@
     'Finished Airing': { text: 'Finished', dot: 'bg-slate-400' },
     'Not yet aired': { text: 'Upcoming', dot: 'bg-sky-500' }
   };
+
+  function getTypeBadgeMeta(type?: string): { border: string; dot: string } {
+    switch (type) {
+      case 'TV':
+        return { border: 'border-emerald-400/60', dot: 'bg-emerald-400' };
+      case 'Movie':
+        return { border: 'border-cyan-400/60', dot: 'bg-cyan-400' };
+      case 'OVA':
+      case 'ONA':
+        return { border: 'border-purple-400/60', dot: 'bg-purple-400' };
+      case 'Special':
+      case 'TV Special':
+        return { border: 'border-amber-400/60', dot: 'bg-amber-400' };
+      case 'Music':
+        return { border: 'border-pink-400/60', dot: 'bg-pink-400' };
+      default:
+        return { border: 'border-white/30', dot: 'bg-white' };
+    }
+  }
 
   let isUpcoming = $derived(anime.status === 'Not yet aired');
   let statusInfo = $derived(anime.status ? STATUS_LABEL[anime.status] : undefined);
@@ -65,36 +83,44 @@
     <!-- Subtle bottom gradient overlay strictly for overlay readability -->
     <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent pointer-events-none"></div>
 
-    <!-- Top floating badges: Type & Score -->
-    <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-1.5 pointer-events-none">
+    <!-- Top floating badges: Type & Score (Guaranteed high contrast against any poster in dark & light modes) -->
+    <div class="absolute top-2 left-2 right-2 flex items-center justify-between gap-1 pointer-events-none">
       {#if anime.type}
-        <Badge variant="default" size="sm" class="bg-black/60 text-white border-white/20 backdrop-blur-md">
-          {anime.type}
-        </Badge>
+        {@const typeMeta = getTypeBadgeMeta(anime.type)}
+        <div
+          class="flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-black/85 {typeMeta.border} border text-white text-[10px] sm:text-[11px] font-bold backdrop-blur-md shadow-md shadow-black/50 select-none tracking-wide shrink-0"
+        >
+          <span class="w-1.5 h-1.5 rounded-full {typeMeta.dot} shrink-0 shadow-xs"></span>
+          <span>{anime.type}</span>
+        </div>
       {:else}
         <span></span>
       {/if}
 
       {#if anime.score !== null && anime.score > 0}
-        <div class="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-black/70 border border-amber-400/40 text-amber-300 text-xs font-semibold backdrop-blur-md shadow-sm" aria-label="Score {anime.score.toFixed(1)}">
-          <svg class="w-3 h-3 fill-amber-400 text-amber-400" viewBox="0 0 20 20" aria-hidden="true">
+        <div
+          class="flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-black/85 border border-amber-400/60 text-amber-300 text-[10px] sm:text-xs font-bold backdrop-blur-md shadow-md shadow-black/50 shrink-0"
+          aria-label="Score {anime.score.toFixed(1)}"
+        >
+          <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 text-amber-400 shrink-0" viewBox="0 0 20 20" aria-hidden="true">
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
           </svg>
           <span>{anime.score.toFixed(1)}</span>
         </div>
       {:else if isUpcoming}
-        <Badge variant="accent" size="sm" class="bg-[#198754]/40 text-white border-[#198754]/50">
-          Upcoming
-        </Badge>
+        <div class="flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-black/85 border border-emerald-400/60 text-emerald-300 text-[10px] sm:text-xs font-bold backdrop-blur-md shadow-md shadow-black/50 shrink-0">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-xs"></span>
+          <span>Upcoming</span>
+        </div>
       {:else}
-        <Badge variant="default" size="sm" class="bg-black/60 text-white/80 border-white/20 backdrop-blur-md">
-          N/A
-        </Badge>
+        <div class="flex items-center px-1.5 py-0.5 rounded-lg bg-black/85 border border-white/20 text-white/70 text-[10px] sm:text-xs font-medium backdrop-blur-md shadow-md shrink-0">
+          <span>N/A</span>
+        </div>
       {/if}
     </div>
 
     <!-- Bottom overlay info on poster (Year / Aired date + Episodes) -->
-    <div class="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between gap-2 text-[11px] text-white/90 font-medium pointer-events-none">
+    <div class="absolute bottom-2 left-2 right-2 flex items-center justify-between gap-1.5 text-[10px] sm:text-[11px] text-white/90 font-medium pointer-events-none">
       <span class="truncate">{dateLabel}</span>
       {#if anime.episodes}
         <span class="text-white/80 shrink-0">{anime.episodes} eps</span>
@@ -103,10 +129,10 @@
   </div>
 
   <!-- Card Body Content -->
-  <div class="flex flex-col flex-1 p-3.5 sm:p-4 justify-between bg-[var(--card-body-bg)]">
-    <div class="space-y-1.5">
+  <div class="flex flex-col flex-1 p-3 sm:p-4 justify-between bg-[var(--card-body-bg)]">
+    <div class="space-y-1 sm:space-y-1.5">
       <h3
-        class="font-semibold text-sm sm:text-base text-[var(--text-primary)] group-hover:text-[#198754] dark:group-hover:text-[#20c997] transition-colors line-clamp-2 leading-snug"
+        class="font-semibold text-xs sm:text-sm md:text-base text-[var(--text-primary)] group-hover:text-[#198754] dark:group-hover:text-[#20c997] transition-colors line-clamp-2 leading-snug"
         title={anime.title}
       >
         {anime.title}
@@ -132,9 +158,9 @@
 
     <!-- Genres / Tags -->
     {#if anime.genres && anime.genres.length > 0}
-      <div class="flex flex-wrap gap-1 mt-3 pt-2.5 border-t border-[var(--glass-border)]">
+      <div class="flex flex-wrap gap-1 mt-2.5 sm:mt-3 pt-2 sm:pt-2.5 border-t border-[var(--glass-border)]">
         {#each anime.genres.slice(0, 2) as genre}
-          <span class="text-[10px] px-2 py-0.5 rounded-lg bg-[var(--tag-bg)] text-[var(--text-secondary)] border border-[var(--tag-border)]">
+          <span class="text-[10px] px-1.5 sm:px-2 py-0.5 rounded-lg bg-[var(--tag-bg)] text-[var(--text-secondary)] border border-[var(--tag-border)]">
             {genre}
           </span>
         {/each}

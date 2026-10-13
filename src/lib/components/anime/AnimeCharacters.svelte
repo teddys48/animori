@@ -47,22 +47,22 @@
   </div>
 
   {#if loading}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
       {#each Array(6) as _}
-        <div class="glass-panel p-3 rounded-2xl flex items-center justify-between gap-3 animate-pulse border border-[var(--glass-border)]">
-          <div class="flex items-center gap-3 min-w-0">
-            <Skeleton width="w-12" height="h-16" rounded="rounded-xl" class="shrink-0" />
-            <div class="space-y-2">
+        <div class="glass-panel p-3 sm:p-3.5 rounded-2xl flex items-center justify-between gap-3 animate-pulse border border-[var(--glass-border)]">
+          <div class="flex items-center gap-2.5 min-w-0 flex-1">
+            <Skeleton width="w-12 sm:w-14" height="h-16 sm:h-18" rounded="rounded-xl" class="shrink-0" />
+            <div class="space-y-2 min-w-0 flex-1">
               <Skeleton width="w-24" height="h-3.5" rounded="rounded" />
               <Skeleton width="w-14" height="h-3" rounded="rounded" />
             </div>
           </div>
-          <div class="flex items-center gap-3 shrink-0">
-            <div class="space-y-2 text-right">
+          <div class="flex items-center justify-end gap-2.5 min-w-0 flex-1 text-right">
+            <div class="space-y-2 min-w-0 flex-1 flex flex-col items-end">
               <Skeleton width="w-20" height="h-3.5" rounded="rounded" />
               <Skeleton width="w-12" height="h-3" rounded="rounded" />
             </div>
-            <Skeleton width="w-12" height="h-16" rounded="rounded-xl" class="shrink-0" />
+            <Skeleton width="w-12 sm:w-14" height="h-16 sm:h-18" rounded="rounded-xl" class="shrink-0" />
           </div>
         </div>
       {/each}
@@ -76,43 +76,49 @@
       No character or voice actor records found in Kitsu for this anime.
     </div>
   {:else}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
       {#each displayedCharacters as char (char.id)}
         {@const primaryVa = char.voiceActors[0]}
         <div
-          class="glass-panel p-3 rounded-2xl border border-[var(--glass-border)] hover:border-[#198754]/50 transition-all flex items-center justify-between gap-2.5 group"
+          class="glass-panel p-3 sm:p-3.5 rounded-2xl border border-[var(--glass-border)] hover:border-[#198754]/50 transition-all flex items-center justify-between gap-3 group relative overflow-hidden"
         >
-          <!-- Left side: Character -->
+          <!-- Left side: Character (strictly takes left half without invading right side) -->
           <div class="flex items-center gap-2.5 min-w-0 flex-1">
-            <div class="w-12 h-16 shrink-0 rounded-xl overflow-hidden bg-[var(--card-bg)] border border-[var(--glass-border)] relative">
+            <!-- Character Avatar -->
+            <div class="w-12 h-16 sm:w-13 sm:h-17 shrink-0 rounded-xl overflow-hidden bg-[#090e1a] border border-[var(--glass-border)] relative flex items-center justify-center shadow-xs">
+              <!-- Placeholder silhouette always sitting underneath -->
+              <div class="absolute inset-0 flex items-center justify-center text-slate-500 pointer-events-none">
+                <svg class="w-5 h-5 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+
               {#if char.image}
                 <img
                   src={char.image}
                   alt={char.name}
                   loading="lazy"
-                  class="w-full h-full object-cover object-top"
+                  class="relative z-1 w-full h-full object-cover object-top"
+                  onerror={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = 'none';
+                  }}
                 />
-              {:else}
-                <div class="w-full h-full flex items-center justify-center text-[var(--text-dim)]">
-                  <svg class="w-5 h-5 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
               {/if}
             </div>
 
-            <div class="min-w-0 space-y-1">
+            <!-- Character Details -->
+            <div class="min-w-0 flex-1 space-y-1">
               <h4
                 class="text-xs sm:text-sm font-semibold text-[var(--text-primary)] group-hover:text-[#198754] dark:group-hover:text-[#20c997] transition-colors truncate"
                 title={char.name}
               >
                 {char.name}
               </h4>
-              <div class="flex items-center gap-1.5">
+              <div class="flex items-center">
                 <Badge
                   variant={char.role === 'Main' ? 'accent' : 'outline'}
                   size="sm"
-                  class="text-[10px] px-1.5 py-0"
+                  class="text-[10px] px-1.5 py-0 inline-flex shrink-0 font-medium"
                 >
                   {char.role}
                 </Badge>
@@ -120,32 +126,41 @@
             </div>
           </div>
 
-          <!-- Right side: Primary Voice Actor -->
+          <!-- Right side: Primary Voice Actor (strictly takes right half, text-right) -->
           {#if primaryVa}
-            <div class="flex items-center gap-2.5 shrink-0 text-right">
-              <div class="min-w-0 space-y-0.5">
-                <p class="text-xs font-medium text-[var(--text-primary)] truncate max-w-[100px] sm:max-w-[120px]" title={primaryVa.name}>
+            <div class="flex items-center justify-end gap-2.5 min-w-0 flex-1 text-right">
+              <!-- Voice Actor Details -->
+              <div class="min-w-0 flex-1 space-y-0.5">
+                <p
+                  class="text-xs sm:text-sm font-medium text-[var(--text-primary)] truncate"
+                  title={primaryVa.name}
+                >
                   {primaryVa.name}
                 </p>
-                <p class="text-[10px] text-[var(--text-muted)] font-medium">
+                <p class="text-[10px] text-[var(--text-muted)] font-medium truncate">
                   {primaryVa.language || 'Voice'}
                 </p>
               </div>
 
-              <div class="w-12 h-16 shrink-0 rounded-xl overflow-hidden bg-[var(--card-bg)] border border-[var(--glass-border)] relative">
+              <!-- Voice Actor Avatar -->
+              <div class="w-12 h-16 sm:w-13 sm:h-17 shrink-0 rounded-xl overflow-hidden bg-[#090e1a] border border-[var(--glass-border)] relative flex items-center justify-center shadow-xs">
+                <!-- Placeholder microphone/avatar icon -->
+                <div class="absolute inset-0 flex items-center justify-center text-slate-500 pointer-events-none">
+                  <svg class="w-5 h-5 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
+                  </svg>
+                </div>
+
                 {#if primaryVa.image}
                   <img
                     src={primaryVa.image}
                     alt={primaryVa.name}
                     loading="lazy"
-                    class="w-full h-full object-cover object-top"
+                    class="relative z-1 w-full h-full object-cover object-top"
+                    onerror={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display = 'none';
+                    }}
                   />
-                {:else}
-                  <div class="w-full h-full flex items-center justify-center text-[var(--text-dim)]">
-                    <svg class="w-5 h-5 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
-                    </svg>
-                  </div>
                 {/if}
               </div>
             </div>
