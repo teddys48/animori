@@ -71,7 +71,7 @@
   <PageHeader
     title={queryParam ? `Search: "${queryParam}"` : 'Anime Catalog'}
     subtitle={queryParam
-      ? `Results from the Jikan anime database for "${queryParam}"`
+      ? `Results from the Kitsu anime database for "${queryParam}"`
       : 'Explore all-time top anime, search titles, and discover your next favorite series.'}
     badge={queryParam ? 'Search' : 'Catalog'}
     badgeVariant={queryParam ? 'info' : 'accent'}

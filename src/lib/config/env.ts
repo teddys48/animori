@@ -6,10 +6,10 @@
  * whitelisted in `vite.config.ts` (`envPrefix`), so only public, non-secret
  * values should ever use it.
  */
-const DEFAULT_JIKAN_API_URL = 'https://api.jikan.moe/v4';
+const DEFAULT_KITSU_API_URL = 'https://kitsu.io/api/edge';
 
 export const ENV = {
-  JIKAN_API_URL: import.meta.env.PUBLIC_JIKAN_API_URL || DEFAULT_JIKAN_API_URL,
+  KITSU_API_URL: import.meta.env.PUBLIC_KITSU_API_URL || DEFAULT_KITSU_API_URL,
   APP_NAME: 'Animori',
   APP_DESCRIPTION: 'Modern Anime Information & Discovery Platform',
   IS_DEV: import.meta.env.DEV,

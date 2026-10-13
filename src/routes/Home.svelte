@@ -16,7 +16,7 @@
   import { getTopAnime, getSeasonNow, getUpcomingAnime } from '../lib/api/anime';
   import type { AnimeItem } from '../lib/types/anime';
 
-  // State toggle to demonstrate UI states (Loading, Empty, Error) in Phase 1 & 2
+  // State toggle to demonstrate UI states (Loading, Empty, Error)
   let previewState = $state<'normal' | 'loading' | 'empty' | 'error'>('normal');
 
   // Homepage sections initialized with baseline data for instant render and offline resilience
@@ -30,47 +30,43 @@
     document.title = 'Animori — Anime Discovery & Information';
   });
 
-  // Staggered sequential fetch to strictly respect Jikan's 3 req/sec rate limit
+  // Fetch real Kitsu data for homepage sections independently
   $effect(() => {
     let cancelled = false;
 
     async function loadRealData() {
-      // 1. Fetch Popular Anime from Jikan v4
+      // 1. Fetch Popular Anime from Kitsu
       try {
         const top = await getTopAnime(undefined, 1);
         if (!cancelled && top.items.length > 0) {
           popularList = top.items.slice(0, 6);
         }
       } catch (err) {
-        if (import.meta.env.DEV) console.warn('[animori] Jikan popular fetch:', err);
+        if (import.meta.env.DEV) console.warn('[animori] Kitsu popular fetch:', err);
       }
 
-      // Respect Jikan's rate limit: 350ms pause before next call
-      await new Promise((r) => setTimeout(r, 350));
       if (cancelled) return;
 
-      // 2. Fetch Currently Airing Anime from Jikan v4
+      // 2. Fetch Currently Airing Anime from Kitsu
       try {
         const airing = await getSeasonNow(1);
         if (!cancelled && airing.items.length > 0) {
           airingList = airing.items.slice(0, 6);
         }
       } catch (err) {
-        if (import.meta.env.DEV) console.warn('[animori] Jikan airing fetch:', err);
+        if (import.meta.env.DEV) console.warn('[animori] Kitsu airing fetch:', err);
       }
 
-      // Respect Jikan's rate limit: 350ms pause before next call
-      await new Promise((r) => setTimeout(r, 350));
       if (cancelled) return;
 
-      // 3. Fetch Upcoming Anime from Jikan v4
+      // 3. Fetch Upcoming Anime from Kitsu
       try {
         const upcoming = await getUpcomingAnime(1);
         if (!cancelled && upcoming.items.length > 0) {
           upcomingList = upcoming.items.slice(0, 6);
         }
       } catch (err) {
-        if (import.meta.env.DEV) console.warn('[animori] Jikan upcoming fetch:', err);
+        if (import.meta.env.DEV) console.warn('[animori] Kitsu upcoming fetch:', err);
       }
     }
 
@@ -187,7 +183,7 @@
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent flex items-end p-4 pointer-events-none">
                 <div class="text-xs text-white">
-                  <span class="font-semibold text-white block">Rank #1 on MAL</span>
+                  <span class="font-semibold text-white block">Rank #1 on Kitsu</span>
                   <span class="text-slate-300">All-Time Highest Rated</span>
                 </div>
               </div>
@@ -198,7 +194,7 @@
     </Container>
   </section>
 
-  <!-- ==================== UI STATE PREVIEW TOGGLE (PHASE 1 & 2 FEATURE) ==================== -->
+  <!-- ==================== UI STATE PREVIEW TOGGLE ==================== -->
   <section class="border-y border-[var(--glass-border)] py-4 bg-[var(--state-container-bg)] transition-colors duration-200">
     <Container>
       <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -252,7 +248,7 @@
       <section aria-label="Loading skeleton preview">
         <SectionHeader
           title="Loading Skeleton State"
-          subtitle="Smooth placeholder skeletons used while fetching data from Jikan"
+          subtitle="Smooth placeholder skeletons used while fetching data from Kitsu"
           badge="Demo View"
         />
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
@@ -286,7 +282,7 @@
       <section id="popular" aria-labelledby="section-popular-title">
         <SectionHeader
           title="Popular Anime"
-          subtitle="Top rated masterpieces of all time"
+          subtitle="Top rated masterpieces of all time on Kitsu"
           badge="Top Rated"
           actionText="View All"
           actionHref="/top"

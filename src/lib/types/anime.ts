@@ -1,6 +1,6 @@
 /**
  * Application-level anime model consumed by UI components.
- * Mapped from raw Jikan payloads in `src/lib/api/anime.ts`.
+ * Mapped from raw Kitsu JSON:API payloads in `src/lib/api/anime.ts`.
  */
 
 export type AnimeType =
@@ -19,30 +19,32 @@ export type AnimeStatus = 'Currently Airing' | 'Finished Airing' | 'Not yet aire
 export type AnimeSeason = 'Winter' | 'Spring' | 'Summer' | 'Fall';
 
 export interface AnimeGenre {
-  id: number;
+  id: string | number;
   name: string;
 }
 
 export interface AnimeAired {
   from: string | null;
   to: string | null;
-  /** Human readable range from Jikan, e.g. "Sep 29, 2023 to Mar 22, 2024". */
+  /** Human readable range e.g. "Sep 29, 2023 to Mar 22, 2024". */
   label: string | null;
 }
 
 export interface AnimeItem {
-  id: number;
+  id: string | number;
   title: string;
   titleEnglish?: string;
   titleJapanese?: string;
   /** Best available poster URL (always set; falls back to a local placeholder). */
   poster: string;
-  /** Optional wide banner image (not provided by Jikan list endpoints). */
+  /** Optional wide banner image. */
   banner?: string;
   type?: AnimeType;
   episodes?: number | null;
-  /** MAL score (0–10). `null` when not yet scored. */
+  /** Normalized rating score (0–10 scale). `null` when not yet scored. */
   score: number | null;
+  /** Raw average rating percentage string from Kitsu (e.g. "82.27%"). */
+  scoreRaw?: string | null;
   scoredBy?: number | null;
   rank?: number | null;
   popularity?: number | null;
@@ -51,14 +53,16 @@ export interface AnimeItem {
   season?: AnimeSeason;
   status?: AnimeStatus;
   aired?: AnimeAired;
-  /** Short aired label for compact UI, e.g. "Jan 2027". */
+  /** Short aired label for compact UI, e.g. "Oct 1999". */
   airedShort?: string;
   airingDate?: string;
   duration?: string | null;
   synopsis?: string;
+  ageRating?: string | null;
+  ageRatingGuide?: string | null;
   genres: string[];
   studios?: string[];
-  /** Canonical MyAnimeList URL. */
+  /** Canonical Kitsu web page URL. */
   url?: string;
 }
 
@@ -69,6 +73,7 @@ export interface PageInfo {
   hasNextPage: boolean;
   total?: number;
   perPage?: number;
+  offset?: number;
 }
 
 export interface Paginated<T> {

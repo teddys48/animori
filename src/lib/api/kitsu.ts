@@ -1,52 +1,50 @@
 /**
- * Centralized Jikan v4 HTTP client.
+ * Centralized Kitsu JSON:API HTTP client.
  *
  * Responsibilities:
  *  - Build request URLs from the configured base URL (never hardcoded in UI).
- *  - Throttle requests to respect Jikan's rate limit (~3 req/s, 60 req/min).
+ *  - Send appropriate JSON:API headers: Accept: application/vnd.api+json.
  *  - Deduplicate identical in-flight requests and cache successful responses
- *    in memory for a short time, so re-renders / navigation never re-fetch.
+ *    in memory for a short time, avoiding redundant fetches on re-renders / navigation.
+ *  - Handle rate limiting gracefully without aggressive retry loops.
  *  - Normalize every failure (network, timeout, HTTP, 429, malformed JSON)
- *    into a `JikanError`.
+ *    into a `KitsuError`.
  *
  * UI components must not import this file directly; use `src/lib/api/anime.ts`.
  */
 import { ENV } from '../config/env';
-import { JikanError } from './errors';
+import { KitsuError } from './errors';
 import type {
-  JikanAnime,
-  JikanErrorResponse,
-  JikanListResponse,
-  JikanResourceResponse,
-  PageParams,
-  SearchAnimeParams,
-  TopAnimeParams
+  KitsuAnimeResource,
+  KitsuErrorResponse,
+  KitsuListResponse,
+  KitsuSingleResponse,
+  KitsuListAnimeParams,
+  KitsuSearchParams
 } from './types';
 
 /* ------------------------------------------------------------------ */
 /* Configuration                                                       */
 /* ------------------------------------------------------------------ */
 
-const BASE_URL = ENV.JIKAN_API_URL.replace(/\/+$/, '');
+const BASE_URL = ENV.KITSU_API_URL.replace(/\/+$/, '');
 
-/** Minimum spacing between request starts. Jikan allows ~3 req/s. */
-const MIN_REQUEST_INTERVAL_MS = 350;
+/** Minimum spacing between outgoing requests to avoid bursting. */
+const MIN_REQUEST_INTERVAL_MS = 100;
 /** Extra pause applied to all queued requests after receiving HTTP 429. */
 const RATE_LIMIT_COOLDOWN_MS = 2_000;
 const REQUEST_TIMEOUT_MS = 15_000;
 const CACHE_TTL_MS = 5 * 60_000;
 const MAX_CACHE_ENTRIES = 100;
 
-type QueryValue = string | number | boolean | undefined | null;
-type QueryParams = Record<string, QueryValue>;
+type QueryParamValue = string | number | boolean | undefined | null;
 
 /* ------------------------------------------------------------------ */
-/* Throttle: simple time-slot reservation (no queue library needed)    */
+/* Throttle: simple time-slot reservation                             */
 /* ------------------------------------------------------------------ */
 
 let nextSlotAt = 0;
 
-/** Reserve the next available request slot and return how long to wait. */
 function reserveSlot(): number {
   const now = Date.now();
   const startAt = Math.max(now, nextSlotAt);
@@ -63,7 +61,7 @@ function sleep(ms: number): Promise<void> {
 }
 
 /* ------------------------------------------------------------------ */
-/* In-memory cache + in-flight de-duplication                          */
+/* In-memory cache + in-flight deduplication                           */
 /* ------------------------------------------------------------------ */
 
 interface CacheEntry {
@@ -85,7 +83,6 @@ function readCache<T>(key: string): Promise<T> | undefined {
 
 function writeCache(key: string, promise: Promise<unknown>): void {
   if (cache.size >= MAX_CACHE_ENTRIES) {
-    // Map preserves insertion order: drop the oldest entry.
     const oldest = cache.keys().next().value;
     if (oldest !== undefined) cache.delete(oldest);
   }
@@ -96,14 +93,25 @@ function writeCache(key: string, promise: Promise<unknown>): void {
 /* URL + response helpers                                              */
 /* ------------------------------------------------------------------ */
 
-function buildUrl(path: string, params: QueryParams = {}): string {
+export function buildKitsuUrl(path: string, params: Record<string, any> = {}): string {
   const search = new URLSearchParams();
-  // Sorted keys give a stable cache key regardless of argument order.
-  for (const key of Object.keys(params).sort()) {
-    const value = params[key];
-    if (value === undefined || value === null || value === '') continue;
-    search.set(key, String(value));
+
+  function appendParam(prefix: string, value: any) {
+    if (value === undefined || value === null || value === '') return;
+    if (typeof value === 'object' && !Array.isArray(value)) {
+      for (const [subKey, subVal] of Object.entries(value)) {
+        appendParam(`${prefix}[${subKey}]`, subVal);
+      }
+    } else {
+      search.set(prefix, String(value));
+    }
   }
+
+  const sortedKeys = Object.keys(params).sort();
+  for (const key of sortedKeys) {
+    appendParam(key, params[key]);
+  }
+
   const qs = search.toString();
   return `${BASE_URL}${path}${qs ? `?${qs}` : ''}`;
 }
@@ -115,44 +123,48 @@ function parseRetryAfter(response: Response): number | undefined {
   return Number.isFinite(seconds) && seconds >= 0 ? seconds * 1000 : undefined;
 }
 
-async function readErrorBody(response: Response): Promise<JikanErrorResponse | undefined> {
+async function readErrorBody(response: Response): Promise<KitsuErrorResponse | undefined> {
   try {
-    return (await response.json()) as JikanErrorResponse;
+    return (await response.json()) as KitsuErrorResponse;
   } catch {
     return undefined;
   }
 }
 
-function errorForStatus(response: Response, body?: JikanErrorResponse): JikanError {
+function errorForStatus(response: Response, body?: KitsuErrorResponse): KitsuError {
   const status = response.status;
-  const detail = body?.message ?? response.statusText ?? 'Request failed';
+  const firstError = body?.errors?.[0];
+  const detail = firstError?.detail || firstError?.title || response.statusText || 'Request failed';
 
   if (status === 429) {
     const retryAfterMs = parseRetryAfter(response) ?? RATE_LIMIT_COOLDOWN_MS;
     applyCooldown(retryAfterMs);
-    return new JikanError('rate-limit', `Rate limited: ${detail}`, { status, retryAfterMs });
+    return new KitsuError('rate-limit', `Rate limited: ${detail}`, { status, retryAfterMs });
   }
-  if (status === 404) return new JikanError('not-found', detail, { status });
-  if (status === 400 || status === 422) return new JikanError('bad-request', detail, { status });
-  return new JikanError('server', `HTTP ${status}: ${detail}`, { status });
+  if (status === 404) return new KitsuError('not-found', detail, { status });
+  if (status === 400 || status === 422) return new KitsuError('bad-request', detail, { status });
+  return new KitsuError('server', `HTTP ${status}: ${detail}`, { status });
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
 
-function isListResponse(body: unknown): body is JikanListResponse<unknown> {
-  if (!isObject(body) || !Array.isArray(body.data) || !isObject(body.pagination)) return false;
-  return typeof body.pagination.last_visible_page === 'number';
+function isListResponse(body: unknown): body is KitsuListResponse<unknown> {
+  return isObject(body) && Array.isArray(body.data);
 }
 
-function isResourceResponse(body: unknown): body is JikanResourceResponse<unknown> {
+function isSingleResponse(body: unknown): body is KitsuSingleResponse<unknown> {
   return isObject(body) && isObject(body.data);
 }
 
-/** Minimal runtime check that a list item looks like an anime. */
-function isAnime(value: unknown): value is JikanAnime {
-  return isObject(value) && typeof value.mal_id === 'number' && typeof value.title === 'string';
+export function isKitsuAnime(value: unknown): value is KitsuAnimeResource {
+  return (
+    isObject(value) &&
+    typeof value.id === 'string' &&
+    value.type === 'anime' &&
+    isObject(value.attributes)
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -165,15 +177,16 @@ async function performRequest<T>(url: string, validate: (body: unknown) => body 
   let response: Response;
   try {
     response = await fetch(url, {
-      headers: { Accept: 'application/json' },
+      headers: {
+        Accept: 'application/vnd.api+json'
+      },
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
     });
   } catch (cause) {
     if (cause instanceof DOMException && (cause.name === 'TimeoutError' || cause.name === 'AbortError')) {
-      throw new JikanError('timeout', 'Request timed out', { cause });
+      throw new KitsuError('timeout', 'Request timed out', { cause });
     }
-    // fetch rejects with TypeError for DNS/offline/CORS-level failures.
-    throw new JikanError('network', 'Network request failed', { cause });
+    throw new KitsuError('network', 'Network request failed', { cause });
   }
 
   if (!response.ok) {
@@ -184,23 +197,22 @@ async function performRequest<T>(url: string, validate: (body: unknown) => body 
   try {
     body = await response.json();
   } catch (cause) {
-    throw new JikanError('malformed', 'Response was not valid JSON', { cause, status: response.status });
+    throw new KitsuError('malformed', 'Response was not valid JSON', {
+      cause,
+      status: response.status
+    });
   }
 
   if (!validate(body)) {
-    throw new JikanError('malformed', 'Response did not match the expected shape', {
+    throw new KitsuError('malformed', 'Response did not match the expected JSON:API shape', {
       status: response.status
     });
   }
   return body;
 }
 
-/**
- * Cached + de-duplicated request. Failed requests are evicted immediately so a
- * manual retry always results in a fresh (throttled) network request.
- */
-function request<T>(path: string, params: QueryParams, validate: (body: unknown) => body is T): Promise<T> {
-  const url = buildUrl(path, params);
+function request<T>(path: string, params: Record<string, any>, validate: (body: unknown) => body is T): Promise<T> {
+  const url = buildKitsuUrl(path, params);
   const cached = readCache<T>(url);
   if (cached) return cached;
 
@@ -212,42 +224,53 @@ function request<T>(path: string, params: QueryParams, validate: (body: unknown)
   return promise;
 }
 
-function requestAnimeList(path: string, params: QueryParams): Promise<JikanListResponse<JikanAnime>> {
-  return request(path, params, isListResponse).then((res) => ({
-    pagination: res.pagination,
-    data: res.data.filter(isAnime)
-  }));
-}
-
 /* ------------------------------------------------------------------ */
 /* Public client                                                       */
 /* ------------------------------------------------------------------ */
 
-export const jikan = {
-  /** GET /anime/{id} — prepared for the Phase 3 detail page. */
-  async getAnime(id: number): Promise<JikanAnime> {
-    const res = await request(`/anime/${id}`, {}, isResourceResponse);
-    if (!isAnime(res.data)) throw new JikanError('malformed', 'Unexpected anime payload');
+export const kitsu = {
+  /** GET /anime/{id} */
+  async getAnime(id: string | number): Promise<KitsuAnimeResource> {
+    const res = await request(`/anime/${id}`, {}, isSingleResponse);
+    if (!isKitsuAnime(res.data)) {
+      throw new KitsuError('malformed', 'Unexpected anime payload from Kitsu');
+    }
     return res.data;
   },
 
-  /** GET /anime?q= — title search. */
-  searchAnime({ q, page, limit }: SearchAnimeParams) {
-    return requestAnimeList('/anime', { q, page, limit, sfw: true });
+  /** GET /anime with filter[text] */
+  searchAnime({ text, limit, offset }: KitsuSearchParams): Promise<KitsuListResponse<KitsuAnimeResource>> {
+    return request(
+      '/anime',
+      {
+        filter: { text: text.trim() },
+        page: { limit, offset }
+      },
+      isListResponse
+    ) as Promise<KitsuListResponse<KitsuAnimeResource>>;
   },
 
-  /** GET /top/anime — optional `filter` (airing/upcoming/...) and `type` (tv/movie/...). */
-  getTopAnime({ filter, type, page, limit }: TopAnimeParams = {}) {
-    return requestAnimeList('/top/anime', { filter, type, page, limit, sfw: true });
+  /** Generic GET /anime with filters, sorting, and pagination */
+  listAnime({
+    filter,
+    sort,
+    limit,
+    offset,
+    include
+  }: KitsuListAnimeParams): Promise<KitsuListResponse<KitsuAnimeResource>> {
+    const params: Record<string, any> = {};
+    if (filter) params.filter = filter;
+    if (sort) params.sort = sort;
+    if (limit !== undefined || offset !== undefined) {
+      params.page = { limit, offset };
+    }
+    if (include) params.include = include;
+
+    return request('/anime', params, isListResponse) as Promise<KitsuListResponse<KitsuAnimeResource>>;
   },
 
-  /** GET /seasons/now — the current broadcast season (determined by Jikan). */
-  getSeasonNow({ page, limit }: PageParams = {}) {
-    return requestAnimeList('/seasons/now', { page, limit, sfw: true });
-  },
-
-  /** GET /seasons/upcoming — titles announced for future seasons. */
-  getSeasonUpcoming({ page, limit }: PageParams = {}) {
-    return requestAnimeList('/seasons/upcoming', { page, limit, sfw: true });
+  /** GET /trending/anime — official Kitsu trending endpoint */
+  getTrendingAnime(limit = 10): Promise<KitsuListResponse<KitsuAnimeResource>> {
+    return request('/trending/anime', { limit }, isListResponse) as Promise<KitsuListResponse<KitsuAnimeResource>>;
   }
 };

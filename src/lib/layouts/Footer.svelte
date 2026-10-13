@@ -36,7 +36,7 @@
             <span>Data Attribution</span>
           </div>
           <p class="text-xs text-[var(--text-muted)] leading-normal">
-            Anime metadata is powered by the official open-source <a href="https://jikan.moe" target="_blank" rel="noopener noreferrer" class="text-[#198754] dark:text-[#20c997] hover:underline font-medium">Jikan REST API v4</a> (un-official MyAnimeList data). Animori is an independent discovery project and is not affiliated directly with MyAnimeList.
+            Anime metadata and images are powered by the public <a href="https://kitsu.app" target="_blank" rel="noopener noreferrer" class="text-[#198754] dark:text-[#20c997] hover:underline font-medium">Kitsu API</a>. Animori is an independent discovery platform and does not claim ownership of the anime catalog or artwork.
           </p>
         </div>
       </div>
@@ -44,7 +44,7 @@
       <!-- Col 2: Navigation Links -->
       <div class="space-y-3">
         <h4 class="text-xs font-semibold uppercase tracking-wider text-[var(--text-primary)]">Navigation</h4>
-        <ul class="space-y-2 text-sm text-[var(--text-muted)]">
+        <ul class="space-y-2 text-sm text-[var(--text-muted)] border-0">
           <li><a href="/" class="hover:text-[#198754] dark:hover:text-[#20c997] transition-colors">Home Discovery</a></li>
           <li><a href="/anime" class="hover:text-[#198754] dark:hover:text-[#20c997] transition-colors">Anime Catalog</a></li>
           <li><a href="/top" class="hover:text-[#198754] dark:hover:text-[#20c997] transition-colors">Top Rankings</a></li>
@@ -71,7 +71,7 @@
           </li>
           <li class="flex items-center gap-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-            <span>Docker Ready</span>
+            <span>Kitsu JSON:API & Docker</span>
           </li>
         </ul>
       </div>

@@ -1,12 +1,12 @@
 /**
- * Normalized error model for Jikan API calls.
+ * Normalized error model for Kitsu API calls.
  *
- * Every failure coming out of the API layer is converted into a `JikanError`
+ * Every failure coming out of the API layer is converted into a `KitsuError`
  * with a `kind`, so the UI can render a friendly message without knowing
  * anything about HTTP, fetch or JSON parsing details.
  */
 
-export type JikanErrorKind =
+export type KitsuErrorKind =
   | 'network' // offline, DNS failure, CORS/network-level failure
   | 'timeout' // request took too long
   | 'rate-limit' // HTTP 429
@@ -15,19 +15,19 @@ export type JikanErrorKind =
   | 'server' // HTTP 5xx or other unexpected status codes
   | 'malformed'; // response body is not the shape we expect
 
-export class JikanError extends Error {
-  readonly kind: JikanErrorKind;
+export class KitsuError extends Error {
+  readonly kind: KitsuErrorKind;
   readonly status?: number;
   /** Suggested wait (ms) before retrying, if known. */
   readonly retryAfterMs?: number;
 
   constructor(
-    kind: JikanErrorKind,
+    kind: KitsuErrorKind,
     message: string,
     options: { status?: number; retryAfterMs?: number; cause?: unknown } = {}
   ) {
     super(message, { cause: options.cause });
-    this.name = 'JikanError';
+    this.name = 'KitsuError';
     this.kind = kind;
     this.status = options.status;
     this.retryAfterMs = options.retryAfterMs;
@@ -39,10 +39,10 @@ export class JikanError extends Error {
   }
 }
 
-/** Coerce anything thrown into a `JikanError`. */
-export function toJikanError(error: unknown): JikanError {
-  if (error instanceof JikanError) return error;
-  return new JikanError('malformed', 'Unexpected error while loading data.', { cause: error });
+/** Coerce anything thrown into a `KitsuError`. */
+export function toKitsuError(error: unknown): KitsuError {
+  if (error instanceof KitsuError) return error;
+  return new KitsuError('malformed', 'Unexpected error while loading data.', { cause: error });
 }
 
 export interface ErrorDescription {
@@ -53,14 +53,14 @@ export interface ErrorDescription {
 
 /** User-facing copy for each error kind. Never exposes raw internals. */
 export function describeError(error: unknown): ErrorDescription {
-  const err = toJikanError(error);
+  const err = toKitsuError(error);
 
   switch (err.kind) {
     case 'rate-limit':
       return {
         title: 'Slow down a little',
         message:
-          'The anime data provider (Jikan) is receiving too many requests right now. Please wait a few seconds and try again.',
+          'The anime data provider (Kitsu) is receiving too many requests right now. Please wait a few seconds and try again.',
         retryable: true
       };
     case 'network':
@@ -92,7 +92,7 @@ export function describeError(error: unknown): ErrorDescription {
       return {
         title: 'Unable to load anime',
         message:
-          'The anime data provider (Jikan) is having trouble at the moment. Please try again later.',
+          'The anime data provider (Kitsu) is having trouble at the moment. Please try again later.',
         retryable: true
       };
     case 'malformed':

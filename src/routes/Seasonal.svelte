@@ -12,7 +12,7 @@
 
   const resource = new Resource<Paginated<AnimeItem>>();
 
-  // Dynamic season name derived from real Jikan data
+  // Dynamic season name derived from real Kitsu data
   let currentSeasonName = $derived.by(() => {
     if (resource.data?.items && resource.data.items.length > 0) {
       const derived = seasonLabel(resource.data.items);
@@ -49,7 +49,7 @@
     <!-- Results Header / Filter Info -->
     {#if resource.status === 'success' && resource.data}
       <div class="flex items-center justify-between gap-2 pb-2 border-b border-[var(--glass-border)] text-xs text-[var(--text-muted)]">
-        <span>Currently airing season from the Jikan archive</span>
+        <span>Currently broadcasting anime from the Kitsu archive</span>
         <span class="text-[var(--text-dim)]">Page {currentPage} of {resource.data.pageInfo.lastPage}</span>
       </div>
     {/if}

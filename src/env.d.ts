@@ -2,8 +2,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  /** Jikan REST API base URL, e.g. https://api.jikan.moe/v4 */
-  readonly PUBLIC_JIKAN_API_URL?: string;
+  /** Kitsu JSON:API base URL, e.g. https://kitsu.io/api/edge */
+  readonly PUBLIC_KITSU_API_URL?: string;
 }
 
 interface ImportMeta {

@@ -2,14 +2,13 @@
   import Container from '../lib/components/ui/Container.svelte';
   import Badge from '../lib/components/ui/Badge.svelte';
   import Button from '../lib/components/ui/Button.svelte';
-  import { jikan } from '../lib/api/jikan';
-  import { mapAnime } from '../lib/api/anime';
+  import { getAnime } from '../lib/api/anime';
   import { Resource } from '../lib/api/resource.svelte';
   import type { AnimeItem } from '../lib/types/anime';
   import Skeleton from '../lib/components/ui/Skeleton.svelte';
 
   interface Props {
-    id: number;
+    id: number | string;
   }
 
   let { id }: Props = $props();
@@ -19,8 +18,7 @@
   $effect(() => {
     document.title = `Anime #${id} — Animori`;
     void resource.load(async () => {
-      const raw = await jikan.getAnime(id);
-      return mapAnime(raw);
+      return getAnime(id);
     });
   });
 
@@ -67,7 +65,7 @@
           <div class="space-y-4 flex-1">
             <div class="flex flex-wrap items-center gap-2">
               {#if anime.score}
-                <Badge variant="warning">★ {anime.score.toFixed(2)}</Badge>
+                <Badge variant="warning">★ {anime.score.toFixed(1)}</Badge>
               {/if}
               {#if anime.type}
                 <Badge variant="default">{anime.type}</Badge>
@@ -103,7 +101,7 @@
               rel="noopener noreferrer"
               class="text-[#198754] dark:text-[#20c997] hover:underline font-medium shrink-0 ml-4"
             >
-              View on MAL ↗
+              View on Kitsu ↗
             </a>
           {/if}
         </div>

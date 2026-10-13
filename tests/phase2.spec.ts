@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Animori Phase 2 — Jikan API & Anime Discovery', () => {
+test.describe('Animori Phase 2 — Kitsu API & Anime Discovery', () => {
   test('Navbar links navigate to all Phase 2 discovery routes', async ({ page }) => {
     await page.goto('/');
 

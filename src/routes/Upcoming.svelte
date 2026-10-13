@@ -37,7 +37,7 @@
     <!-- Results Header / Filter Info -->
     {#if resource.status === 'success' && resource.data}
       <div class="flex items-center justify-between gap-2 pb-2 border-b border-[var(--glass-border)] text-xs text-[var(--text-muted)]">
-        <span>Upcoming releases officially confirmed on MyAnimeList</span>
+        <span>Upcoming releases officially tracked on Kitsu</span>
         <span class="text-[var(--text-dim)]">Page {currentPage} of {resource.data.pageInfo.lastPage}</span>
       </div>
     {/if}

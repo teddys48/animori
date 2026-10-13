@@ -1,4 +1,4 @@
-import { JikanError, toJikanError } from './errors';
+import { KitsuError, toKitsuError } from './errors';
 
 export type ResourceStatus = 'idle' | 'loading' | 'success' | 'error';
 
@@ -8,13 +8,13 @@ export type ResourceStatus = 'idle' | 'loading' | 'success' | 'error';
  * - Tracks loading / success / error state for the UI.
  * - Ignores stale responses when a newer `load()` has started
  *   (e.g. fast pagination clicks or back/forward navigation).
- * - `retry()` re-runs the last loader; failed requests are never cached by the
- *   Jikan client, so a retry results in a new, throttled request.
+ * - `retry()` re-runs the last loader; failed requests are evicted immediately,
+ *   so a retry results in a fresh network request.
  */
 export class Resource<T> {
   status = $state<ResourceStatus>('idle');
   data = $state<T | null>(null);
-  error = $state<JikanError | null>(null);
+  error = $state<KitsuError | null>(null);
 
   #token = 0;
   #lastLoader: (() => Promise<T>) | null = null;
@@ -37,7 +37,7 @@ export class Resource<T> {
     } catch (err) {
       if (token !== this.#token) return;
       this.data = null;
-      this.error = toJikanError(err);
+      this.error = toKitsuError(err);
       this.status = 'error';
       if (import.meta.env.DEV) console.warn('[animori] request failed:', err);
     }
