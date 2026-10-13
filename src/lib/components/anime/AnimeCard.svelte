@@ -88,9 +88,9 @@
     <!-- Subtle bottom gradient overlay strictly for overlay readability -->
     <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent pointer-events-none"></div>
 
-    <!-- Top floating bar: Type & Score (left) and Personalization actions (right) -->
-    <div class="absolute top-2 left-2 right-2 flex items-center justify-between gap-1 z-20">
-      <div class="flex items-center gap-1 min-w-0">
+    <!-- Top floating bar: Badges (left column) and Personalization actions (right column) -->
+    <div class="absolute top-2 left-2 right-2 flex items-start justify-between gap-1.5 z-20 pointer-events-none">
+      <div class="flex flex-col items-start gap-1 min-w-0 pointer-events-auto">
         {#if anime.type}
           {@const typeMeta = getTypeBadgeMeta(anime.type)}
           <div
@@ -119,7 +119,9 @@
         {/if}
       </div>
 
-      <AnimeActions {anime} variant="card" />
+      <div class="pointer-events-auto shrink-0">
+        <AnimeActions {anime} variant="card" />
+      </div>
     </div>
 
     <!-- Bottom overlay info on poster (Year / Aired date + Episodes) -->

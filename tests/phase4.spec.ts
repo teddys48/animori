@@ -349,4 +349,31 @@ test.describe('Animori Phase 4 — Advanced Discovery & UX', () => {
       expect(optionCount).toBeGreaterThan(1);
     }
   });
+  /* ------------------------------------------------------------------ */
+  /* 9. Card Badges and Action Buttons Layout (No Overlap)              */
+  /* ------------------------------------------------------------------ */
+
+  test("Card status badges and favorite buttons do not collide or overlap", async ({ page }) => {
+    await page.goto("/");
+    const upcomingSection = page.locator("section#upcoming");
+    await expect(upcomingSection).toBeVisible();
+
+    const cards = upcomingSection.locator("article");
+    const count = await cards.count();
+    expect(count).toBeGreaterThan(0);
+
+    for (let i = 0; i < Math.min(count, 6); i++) {
+      const card = cards.nth(i);
+      const badges = card.locator(".absolute.top-2 > div").first();
+      const actions = card.locator(".absolute.top-2 > div").nth(1);
+
+      const badgeBox = await badges.boundingBox();
+      const actionBox = await actions.boundingBox();
+
+      if (badgeBox && actionBox) {
+        // Assert badges right edge does not exceed action buttons left edge
+        expect(badgeBox.x + badgeBox.width).toBeLessThanOrEqual(actionBox.x + 2);
+      }
+    }
+  });
 });

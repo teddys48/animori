@@ -15,6 +15,12 @@ test.describe('Animori Phase 1 — Smoke & Foundation Tests', () => {
     const heroTitle = page.locator('#hero-title');
     await expect(heroTitle).toBeVisible();
     await expect(heroTitle).toContainText("Frieren: Beyond Journey's End");
+
+    // Check spotlight showcase poster image is visible and successfully loaded
+    const spotlightImg = page.locator("img[alt*=\"showcase\"]");
+    await expect(spotlightImg).toBeVisible();
+    const isLoaded = await spotlightImg.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0);
+    expect(isLoaded).toBe(true);
   });
 
   test('renders sections and mock anime cards', async ({ page }) => {

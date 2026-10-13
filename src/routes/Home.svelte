@@ -13,12 +13,15 @@
     MOCK_AIRING_ANIME,
     MOCK_UPCOMING_ANIME
   } from '../lib/data/mockAnime';
-  import { getTopAnime, getSeasonNow, getUpcomingAnime } from '../lib/api/anime';
+  import { getTopAnime, getSeasonNow, getUpcomingAnime, getAnime } from '../lib/api/anime';
   import { recentStore, recentToAnimeItem } from '../lib/stores/recent.svelte';
   import type { AnimeItem } from '../lib/types/anime';
 
   // State toggle to demonstrate UI states (Loading, Empty, Error)
   let previewState = $state<'normal' | 'loading' | 'empty' | 'error'>('normal');
+
+  // Spotlight hero anime initialized with valid fallback and upgraded to live Kitsu data
+  let heroAnime = $state<AnimeItem>(HERO_FEATURED_ANIME);
 
   // Homepage sections initialized with baseline data for instant render and offline resilience
   let popularList = $state<AnimeItem[]>(MOCK_POPULAR_ANIME.slice(0, 6));
@@ -36,6 +39,22 @@
     let cancelled = false;
 
     async function loadRealData() {
+      // 0. Fetch real Spotlight anime data from Kitsu
+      try {
+        const liveHero = await getAnime(46474);
+        if (!cancelled && liveHero) {
+          heroAnime = {
+            ...liveHero,
+            title: HERO_FEATURED_ANIME.title,
+            titleJapanese: liveHero.titleJapanese || HERO_FEATURED_ANIME.titleJapanese
+          };
+        }
+      } catch (err) {
+        if (import.meta.env.DEV) console.warn('[animori] Kitsu hero fetch:', err);
+      }
+
+      if (cancelled) return;
+
       // 1. Fetch Popular Anime from Kitsu
       try {
         const top = await getTopAnime(undefined, 1);
@@ -88,9 +107,10 @@
         <!-- Banner Image Background with Theme-Aware Gradient -->
         <div class="absolute inset-0">
           <img
-            src={HERO_FEATURED_ANIME.banner}
-            alt="{HERO_FEATURED_ANIME.title} background"
+            src={heroAnime.banner || HERO_FEATURED_ANIME.banner}
+            alt="{heroAnime.title} background"
             class="w-full h-full object-cover object-center opacity-25 dark:opacity-30"
+            onerror={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
           />
           <div class="absolute inset-0 bg-gradient-to-r from-[var(--bg-primary)] via-[var(--bg-primary)]/90 to-transparent"></div>
           <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-transparent to-[var(--bg-primary)]/40"></div>
@@ -109,45 +129,49 @@
                 <svg class="w-3.5 h-3.5 fill-[var(--badge-warning-text)] text-[var(--badge-warning-text)]" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
-                {HERO_FEATURED_ANIME.score} Score
+                {heroAnime.score ?? HERO_FEATURED_ANIME.score} Score
               </Badge>
               <Badge variant="default" size="md">
-                {HERO_FEATURED_ANIME.type} · {HERO_FEATURED_ANIME.episodes} Episodes
+                {heroAnime.type ?? HERO_FEATURED_ANIME.type} · {heroAnime.episodes ?? HERO_FEATURED_ANIME.episodes} Episodes
               </Badge>
             </div>
 
             <!-- Title -->
             <div class="space-y-2">
               <h1 id="hero-title" class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--text-primary)] tracking-tight leading-tight">
-                {HERO_FEATURED_ANIME.title}
+                {heroAnime.title}
               </h1>
-              {#if HERO_FEATURED_ANIME.titleJapanese}
+              {#if heroAnime.titleJapanese}
                 <p class="text-sm font-medium text-[var(--text-muted)] tracking-wide">
-                  {HERO_FEATURED_ANIME.titleJapanese}
+                  {heroAnime.titleJapanese}
                 </p>
               {/if}
             </div>
 
             <!-- Synopsis snippet -->
             <p class="text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl leading-relaxed">
-              {HERO_FEATURED_ANIME.synopsis}
+              {heroAnime.synopsis ?? HERO_FEATURED_ANIME.synopsis}
             </p>
 
             <!-- Metadata info tags -->
             <div class="flex flex-wrap items-center gap-3 pt-1 text-xs text-[var(--text-secondary)]">
-              <span class="flex items-center gap-1.5 font-medium">
-                <span class="text-[#198754] dark:text-[#20c997] font-semibold">Studio:</span>
-                {HERO_FEATURED_ANIME.studios?.join(', ')}
-              </span>
-              <span>•</span>
-              <span class="flex items-center gap-1.5 font-medium">
-                <span class="text-[#198754] dark:text-[#20c997] font-semibold">Genres:</span>
-                {HERO_FEATURED_ANIME.genres.join(', ')}
-              </span>
-              <span>•</span>
+              {#if heroAnime.studios?.length}
+                <span class="flex items-center gap-1.5 font-medium">
+                  <span class="text-[#198754] dark:text-[#20c997] font-semibold">Studio:</span>
+                  {heroAnime.studios.join(', ')}
+                </span>
+                <span>•</span>
+              {/if}
+              {#if heroAnime.genres?.length}
+                <span class="flex items-center gap-1.5 font-medium">
+                  <span class="text-[#198754] dark:text-[#20c997] font-semibold">Genres:</span>
+                  {heroAnime.genres.join(', ')}
+                </span>
+                <span>•</span>
+              {/if}
               <span class="flex items-center gap-1.5 font-medium">
                 <span class="text-[#198754] dark:text-[#20c997] font-semibold">Status:</span>
-                {HERO_FEATURED_ANIME.status}
+                {heroAnime.status ?? HERO_FEATURED_ANIME.status}
               </span>
             </div>
 
@@ -156,31 +180,37 @@
               <Button
                 variant="primary"
                 size="md"
-                href="/anime"
+                href="/anime/{heroAnime.id}"
               >
                 <svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
-                Explore Catalog
+                View Details
               </Button>
 
               <Button
                 variant="glass"
                 size="md"
-                href="/seasonal"
+                href="/anime"
               >
-                View Currently Airing
+                Explore Catalog
               </Button>
             </div>
           </div>
 
-          <!-- Right Column: Poster Card Preview -->
-          <div class="hidden lg:flex lg:col-span-4 justify-center items-center">
-            <div class="relative w-64 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border border-[var(--glass-border-hover)] bg-[#090e1a] transform rotate-1 hover:rotate-0 transition-transform duration-300">
+          <!-- Right Column: Poster Card Preview (Visible on all screens with responsive scaling) -->
+          <div class="flex justify-center items-center lg:col-span-4 mt-2 lg:mt-0">
+            <a
+              href="/anime/{heroAnime.id}"
+              class="group relative block w-52 sm:w-60 lg:w-64 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border border-[var(--glass-border-hover)] bg-[#090e1a] transform lg:rotate-1 lg:hover:rotate-0 hover:scale-105 transition-all duration-300 cursor-pointer"
+              aria-label="View {heroAnime.title} details"
+            >
               <img
-                src={HERO_FEATURED_ANIME.poster}
-                alt="{HERO_FEATURED_ANIME.title} showcase"
-                class="w-full h-full object-cover object-center"
+                src={heroAnime.poster || HERO_FEATURED_ANIME.poster}
+                alt="{heroAnime.title} showcase"
+                class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                onerror={(e) => { (e.currentTarget as HTMLImageElement).src = '/fallback-poster.png'; }}
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent flex items-end p-4 pointer-events-none">
                 <div class="text-xs text-white">
@@ -188,7 +218,7 @@
                   <span class="text-slate-300">All-Time Highest Rated</span>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
