@@ -115,7 +115,7 @@
       <!-- Dropdown Menu -->
       {#if isDropdownOpen}
         <div
-          class="absolute left-0 mt-2 w-52 rounded-2xl glass-modal shadow-2xl border border-[var(--glass-border)] p-1.5 z-50 animate-fade-in text-xs font-medium backdrop-blur-2xl bg-[var(--card-bg)]/95"
+          class="absolute left-0 mt-2 w-52 rounded-2xl glass-modal shadow-2xl border border-[var(--glass-border)] p-1.5 z-50 animate-fade-in text-xs font-medium backdrop-blur-2xl bg-white/95 dark:bg-[#0c1222]/95"
           role="menu"
           aria-label="Select Watchlist Status"
         >
@@ -215,7 +215,7 @@
       <!-- Dropdown Menu for Card -->
       {#if isDropdownOpen}
         <div
-          class="absolute right-0 top-full mt-1.5 w-48 rounded-2xl glass-modal shadow-2xl border border-[var(--glass-border)] p-1.5 z-50 text-xs font-medium backdrop-blur-2xl bg-[var(--card-bg)]/95"
+          class="absolute right-0 top-full mt-1.5 w-48 rounded-2xl glass-modal shadow-2xl border border-[var(--glass-border)] p-1.5 z-50 text-xs font-medium backdrop-blur-2xl bg-white/95 dark:bg-[#0c1222]/95"
           role="menu"
           aria-label="Select Watchlist Status"
         >
@@ -267,7 +267,7 @@
           const val = (e.target as HTMLSelectElement).value;
           userLibrary.setWatchStatus(anime, val ? (val as WatchStatus) : null);
         }}
-        class="text-xs px-2.5 py-1.5 rounded-xl bg-[var(--glass-bg-base)] border border-[var(--glass-border)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer"
+        class="text-xs px-2.5 py-1.5 pr-7 rounded-xl bg-[var(--glass-bg-base)] dark:bg-[#0c1222] border border-[var(--glass-border)] hover:border-[var(--glass-border-hover)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer shadow-xs transition-colors [&>option]:bg-white [&>option]:text-slate-900 dark:[&>option]:bg-[#0c1222] dark:[&>option]:text-slate-100"
         aria-label="Change Watchlist Status"
       >
         <option value="">Not on Watchlist</option>

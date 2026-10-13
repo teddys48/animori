@@ -79,7 +79,7 @@
           <select
             id="fav-sort"
             bind:value={sortBy}
-            class="text-xs px-3 py-2 rounded-xl bg-[var(--glass-bg-base)] border border-[var(--glass-border)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer"
+            class="text-xs px-3 py-2 pr-7 rounded-xl bg-[var(--glass-bg-base)] dark:bg-[#0c1222] border border-[var(--glass-border)] hover:border-[var(--glass-border-hover)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer shadow-xs transition-colors [&>option]:bg-white [&>option]:text-slate-900 dark:[&>option]:bg-[#0c1222] dark:[&>option]:text-slate-100"
           >
             <option value="recent">Recently Added</option>
             <option value="title">Title (A-Z)</option>

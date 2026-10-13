@@ -279,7 +279,7 @@
             id="filter-type"
             value={typeParam}
             onchange={(e) => updateFilter({ type: (e.target as HTMLSelectElement).value || null, page: 1 })}
-            class="w-full text-xs px-2.5 py-2 rounded-xl bg-[var(--glass-bg-base)] border border-[var(--glass-border)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer"
+            class="w-full text-xs px-2.5 py-2 pr-7 rounded-xl bg-[var(--glass-bg-base)] dark:bg-[#0c1222] border border-[var(--glass-border)] hover:border-[var(--glass-border-hover)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer shadow-xs transition-colors [&>option]:bg-white [&>option]:text-slate-900 dark:[&>option]:bg-[#0c1222] dark:[&>option]:text-slate-100"
           >
             <option value="" selected={!typeParam}>All Formats</option>
             {#each TYPE_OPTIONS as opt}
@@ -297,7 +297,7 @@
             id="filter-status"
             value={statusParam}
             onchange={(e) => updateFilter({ status: (e.target as HTMLSelectElement).value || null, page: 1 })}
-            class="w-full text-xs px-2.5 py-2 rounded-xl bg-[var(--glass-bg-base)] border border-[var(--glass-border)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer"
+            class="w-full text-xs px-2.5 py-2 pr-7 rounded-xl bg-[var(--glass-bg-base)] dark:bg-[#0c1222] border border-[var(--glass-border)] hover:border-[var(--glass-border-hover)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer shadow-xs transition-colors [&>option]:bg-white [&>option]:text-slate-900 dark:[&>option]:bg-[#0c1222] dark:[&>option]:text-slate-100"
           >
             <option value="" selected={!statusParam}>All Statuses</option>
             {#each STATUS_OPTIONS as opt}
@@ -315,7 +315,7 @@
             id="filter-category"
             value={categoryParam}
             onchange={(e) => updateFilter({ category: (e.target as HTMLSelectElement).value || null, page: 1 })}
-            class="w-full text-xs px-2.5 py-2 rounded-xl bg-[var(--glass-bg-base)] border border-[var(--glass-border)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer"
+            class="w-full text-xs px-2.5 py-2 pr-7 rounded-xl bg-[var(--glass-bg-base)] dark:bg-[#0c1222] border border-[var(--glass-border)] hover:border-[var(--glass-border-hover)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer shadow-xs transition-colors [&>option]:bg-white [&>option]:text-slate-900 dark:[&>option]:bg-[#0c1222] dark:[&>option]:text-slate-100"
           >
             <option value="" selected={!categoryParam}>All Genres</option>
             {#each CATEGORY_OPTIONS as opt}
@@ -333,7 +333,7 @@
             id="filter-season"
             value={seasonParam}
             onchange={(e) => updateFilter({ season: (e.target as HTMLSelectElement).value || null, page: 1 })}
-            class="w-full text-xs px-2.5 py-2 rounded-xl bg-[var(--glass-bg-base)] border border-[var(--glass-border)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer"
+            class="w-full text-xs px-2.5 py-2 pr-7 rounded-xl bg-[var(--glass-bg-base)] dark:bg-[#0c1222] border border-[var(--glass-border)] hover:border-[var(--glass-border-hover)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer shadow-xs transition-colors [&>option]:bg-white [&>option]:text-slate-900 dark:[&>option]:bg-[#0c1222] dark:[&>option]:text-slate-100"
           >
             <option value="" selected={!seasonParam}>All Seasons</option>
             {#each SEASON_OPTIONS as opt}
@@ -351,7 +351,7 @@
             id="filter-year"
             value={yearParam}
             onchange={(e) => updateFilter({ year: (e.target as HTMLSelectElement).value || null, page: 1 })}
-            class="w-full text-xs px-2.5 py-2 rounded-xl bg-[var(--glass-bg-base)] border border-[var(--glass-border)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer"
+            class="w-full text-xs px-2.5 py-2 pr-7 rounded-xl bg-[var(--glass-bg-base)] dark:bg-[#0c1222] border border-[var(--glass-border)] hover:border-[var(--glass-border-hover)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer shadow-xs transition-colors [&>option]:bg-white [&>option]:text-slate-900 dark:[&>option]:bg-[#0c1222] dark:[&>option]:text-slate-100"
           >
             <option value="" selected={!yearParam}>All Years</option>
             {#each YEAR_OPTIONS as yr}
@@ -369,7 +369,7 @@
             id="filter-sort"
             value={sortParam || 'popular'}
             onchange={(e) => updateFilter({ sort: (e.target as HTMLSelectElement).value || null, page: 1 })}
-            class="w-full text-xs px-2.5 py-2 rounded-xl bg-[var(--glass-bg-base)] border border-[var(--glass-border)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer"
+            class="w-full text-xs px-2.5 py-2 pr-7 rounded-xl bg-[var(--glass-bg-base)] dark:bg-[#0c1222] border border-[var(--glass-border)] hover:border-[var(--glass-border-hover)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#198754] cursor-pointer shadow-xs transition-colors [&>option]:bg-white [&>option]:text-slate-900 dark:[&>option]:bg-[#0c1222] dark:[&>option]:text-slate-100"
           >
             {#each SORT_OPTIONS as opt}
               <option value={opt.id} selected={opt.id === (sortParam || 'popular')}>{opt.label}</option>

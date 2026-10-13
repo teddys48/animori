@@ -52,6 +52,40 @@
     outline: 2px solid var(--accent-primary);
     outline-offset: 2px;
   }
+
+  /* Form Controls & Dropdown Select Styling */
+  select {
+    color-scheme: light;
+    color: var(--text-primary);
+  }
+
+  :root,
+  [data-theme="dark"],
+  html.dark,
+  [data-theme="dark"] select,
+  html.dark select {
+    color-scheme: dark;
+  }
+
+  [data-theme="light"],
+  html.light,
+  [data-theme="light"] select,
+  html.light select {
+    color-scheme: light;
+  }
+
+  /* Explicit option styles: Opaque solid background to guarantee high contrast across all browsers and operating systems */
+  select option {
+    background-color: #ffffff;
+    color: #0f172a;
+    padding: 6px 12px;
+  }
+
+  [data-theme="dark"] select option,
+  html.dark select option {
+    background-color: #0c1222;
+    color: #f8fafc;
+  }
 }
 
 /* Badge Variants System (CSS Variable Driven for 100% Theme Reactivity) */

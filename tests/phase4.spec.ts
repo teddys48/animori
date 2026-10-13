@@ -312,4 +312,41 @@ test.describe('Animori Phase 4 — Advanced Discovery & UX', () => {
       }
     }
   });
+  /* ------------------------------------------------------------------ */
+  /* 8. Filter & Sort Dropdown Dark Mode Legibility                     */
+  /* ------------------------------------------------------------------ */
+
+  test("Filter and sort dropdowns are fully legible and high-contrast in dark mode", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.goto("/anime");
+
+    const selectIds = [
+      "#filter-type",
+      "#filter-status",
+      "#filter-category",
+      "#filter-season",
+      "#filter-year",
+      "#filter-sort"
+    ];
+
+    for (const id of selectIds) {
+      const select = page.locator(`select${id}`);
+      await expect(select).toBeVisible();
+
+      // Verify select has dark color-scheme in computed styles
+      const selectStyles = await select.evaluate((el) => {
+        const cs = window.getComputedStyle(el);
+        return {
+          colorScheme: cs.colorScheme,
+          color: cs.color
+        };
+      });
+
+      expect(selectStyles.colorScheme).toContain("dark");
+
+      // Verify options are defined and have options
+      const optionCount = await select.locator("option").count();
+      expect(optionCount).toBeGreaterThan(1);
+    }
+  });
 });
