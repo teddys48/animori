@@ -393,58 +393,196 @@ export function getTopCategory(id: string | null | undefined): TopCategory {
 }
 
 /* ------------------------------------------------------------------ */
+/* Discovery & Filter Options (Phase 4)                                */
+/* ------------------------------------------------------------------ */
+
+export interface SortOption {
+  id: string;
+  label: string;
+  kitsuSort: string;
+}
+
+export const SORT_OPTIONS: readonly SortOption[] = [
+  { id: 'popular', label: 'Most Popular', kitsuSort: '-userCount' },
+  { id: 'rating', label: 'Highest Rated', kitsuSort: '-averageRating' },
+  { id: 'newest', label: 'Newest First', kitsuSort: '-startDate' },
+  { id: 'oldest', label: 'Oldest First', kitsuSort: 'startDate' },
+  { id: 'title_asc', label: 'Title (A-Z)', kitsuSort: 'canonicalTitle' },
+  { id: 'title_desc', label: 'Title (Z-A)', kitsuSort: '-canonicalTitle' }
+];
+
+export interface FilterOption {
+  id: string;
+  label: string;
+}
+
+export const TYPE_OPTIONS: readonly FilterOption[] = [
+  { id: 'TV', label: 'TV Series' },
+  { id: 'movie', label: 'Movie' },
+  { id: 'OVA', label: 'OVA' },
+  { id: 'ONA', label: 'ONA' },
+  { id: 'special', label: 'Special' },
+  { id: 'music', label: 'Music' }
+];
+
+export const STATUS_OPTIONS: readonly FilterOption[] = [
+  { id: 'current', label: 'Currently Airing' },
+  { id: 'finished', label: 'Finished Airing' },
+  { id: 'upcoming', label: 'Upcoming' }
+];
+
+export const CATEGORY_OPTIONS: readonly FilterOption[] = [
+  { id: 'action', label: 'Action' },
+  { id: 'adventure', label: 'Adventure' },
+  { id: 'comedy', label: 'Comedy' },
+  { id: 'drama', label: 'Drama' },
+  { id: 'fantasy', label: 'Fantasy' },
+  { id: 'horror', label: 'Horror' },
+  { id: 'mystery', label: 'Mystery' },
+  { id: 'romance', label: 'Romance' },
+  { id: 'science-fiction', label: 'Sci-Fi' },
+  { id: 'slice-of-life', label: 'Slice of Life' },
+  { id: 'sports', label: 'Sports' },
+  { id: 'supernatural', label: 'Supernatural' },
+  { id: 'psychological', label: 'Psychological' },
+  { id: 'isekai', label: 'Isekai' },
+  { id: 'magic', label: 'Magic' },
+  { id: 'music', label: 'Music' }
+];
+
+export const SEASON_OPTIONS: readonly FilterOption[] = [
+  { id: 'winter', label: 'Winter' },
+  { id: 'spring', label: 'Spring' },
+  { id: 'summer', label: 'Summer' },
+  { id: 'fall', label: 'Fall' }
+];
+
+export interface DiscoverFilters {
+  query?: string;
+  type?: string;
+  status?: string;
+  category?: string;
+  seasonYear?: number | string;
+  season?: string;
+  sort?: string;
+  page?: number;
+  limit?: number;
+  signal?: AbortSignal;
+}
+
+/**
+ * Advanced anime discovery with server-side filters and sorting from Kitsu API.
+ */
+export async function discoverAnime(options: DiscoverFilters = {}): Promise<Paginated<AnimeItem>> {
+  const page = options.page && options.page > 0 ? options.page : 1;
+  const limit = options.limit ?? PAGE_SIZE;
+  const offset = Math.max(0, (page - 1) * limit);
+
+  const filter: Record<string, string | number> = {};
+  if (options.query && options.query.trim()) {
+    filter.text = options.query.trim();
+  }
+  if (options.type && options.type.trim()) {
+    filter.subtype = options.type.trim();
+  }
+  if (options.status && options.status.trim()) {
+    filter.status = options.status.trim();
+  }
+  if (options.category && options.category.trim()) {
+    filter.categories = options.category.trim();
+  }
+  if (options.seasonYear) {
+    const yr = Number(options.seasonYear);
+    if (Number.isInteger(yr) && yr > 1900 && yr < 2100) {
+      filter.seasonYear = yr;
+    }
+  }
+  if (options.season && options.season.trim()) {
+    filter.season = options.season.trim().toLowerCase();
+  }
+
+  // Determine sort
+  let sortParam: string | undefined;
+  if (options.sort) {
+    const matched = SORT_OPTIONS.find((s) => s.id === options.sort);
+    sortParam = matched ? matched.kitsuSort : options.sort;
+  } else if (!filter.text) {
+    // When no search query, default to most popular
+    sortParam = '-userCount';
+  }
+
+  const res = await kitsu.listAnime({
+    filter: Object.keys(filter).length > 0 ? filter : undefined,
+    sort: sortParam,
+    limit,
+    offset,
+    signal: options.signal
+  });
+
+  return toPaginated(res, page, limit);
+}
+
+/* ------------------------------------------------------------------ */
 /* Public service API                                                  */
 /* ------------------------------------------------------------------ */
 
 /** Search anime by title using filter[text] */
-export async function searchAnime(query: string, page = 1): Promise<Paginated<AnimeItem>> {
+export async function searchAnime(
+  query: string,
+  page = 1,
+  signal?: AbortSignal
+): Promise<Paginated<AnimeItem>> {
   const offset = Math.max(0, (page - 1) * PAGE_SIZE);
-  const res = await kitsu.searchAnime({ text: query.trim(), limit: PAGE_SIZE, offset });
+  const res = await kitsu.searchAnime({ text: query.trim(), limit: PAGE_SIZE, offset, signal });
   return toPaginated(res, page, PAGE_SIZE);
 }
 
 /** Get top / curated ranking anime by category and page */
 export async function getTopAnime(
   category: TopCategory = TOP_CATEGORIES[0],
-  page = 1
+  page = 1,
+  signal?: AbortSignal
 ): Promise<Paginated<AnimeItem>> {
   const offset = Math.max(0, (page - 1) * PAGE_SIZE);
   const res = await kitsu.listAnime({
     filter: category.filter,
     sort: category.sort ?? '-averageRating',
     limit: PAGE_SIZE,
-    offset
+    offset,
+    signal
   });
   return toPaginated(res, page, PAGE_SIZE);
 }
 
 /** Get official trending anime from Kitsu (/trending/anime) */
-export async function getTrendingAnime(limit = 10): Promise<AnimeItem[]> {
-  const res = await kitsu.getTrendingAnime(limit);
+export async function getTrendingAnime(limit = 10, signal?: AbortSignal): Promise<AnimeItem[]> {
+  const res = await kitsu.getTrendingAnime(limit, signal);
   const incMap = buildIncludedMap(res.included);
   return uniqueById(res.data.map((item) => mapKitsuAnime(item, incMap)));
 }
 
 /** Get currently airing anime from Kitsu */
-export async function getSeasonNow(page = 1): Promise<Paginated<AnimeItem>> {
+export async function getSeasonNow(page = 1, signal?: AbortSignal): Promise<Paginated<AnimeItem>> {
   const offset = Math.max(0, (page - 1) * PAGE_SIZE);
   const res = await kitsu.listAnime({
     filter: { status: 'current' },
     sort: '-userCount',
     limit: PAGE_SIZE,
-    offset
+    offset,
+    signal
   });
   return toPaginated(res, page, PAGE_SIZE);
 }
 
 /** Get upcoming anime from Kitsu */
-export async function getUpcomingAnime(page = 1): Promise<Paginated<AnimeItem>> {
+export async function getUpcomingAnime(page = 1, signal?: AbortSignal): Promise<Paginated<AnimeItem>> {
   const offset = Math.max(0, (page - 1) * PAGE_SIZE);
   const res = await kitsu.listAnime({
     filter: { status: 'upcoming' },
     sort: '-userCount',
     limit: PAGE_SIZE,
-    offset
+    offset,
+    signal
   });
   return toPaginated(res, page, PAGE_SIZE);
 }
@@ -461,9 +599,9 @@ export function validateAnimeId(id: string | number): number {
 }
 
 /** Get single anime details by ID from Kitsu, with included genres and categories */
-export async function getAnime(id: string | number): Promise<AnimeItem> {
+export async function getAnime(id: string | number, signal?: AbortSignal): Promise<AnimeItem> {
   const validId = validateAnimeId(id);
-  const res = await kitsu.getAnime(validId, 'genres,categories');
+  const res = await kitsu.getAnime(validId, 'genres,categories', signal);
   const incMap = buildIncludedMap(res.included);
   return mapKitsuAnime(res.data, incMap);
 }
@@ -471,10 +609,11 @@ export async function getAnime(id: string | number): Promise<AnimeItem> {
 /** Get characters and voice actors for an anime */
 export async function getAnimeCharacters(
   id: string | number,
-  limit = 12
+  limit = 12,
+  signal?: AbortSignal
 ): Promise<CharacterItem[]> {
   const validId = validateAnimeId(id);
-  const res = await kitsu.getAnimeCharacters(validId, limit);
+  const res = await kitsu.getAnimeCharacters(validId, limit, signal);
   const incMap = buildIncludedMap(res.included);
 
   const characters: CharacterItem[] = [];
@@ -574,10 +713,11 @@ export async function getAnimeCharacters(
 /** Get related anime from Kitsu media-relationships */
 export async function getAnimeRelated(
   id: string | number,
-  limit = 20
+  limit = 20,
+  signal?: AbortSignal
 ): Promise<RelatedAnimeItem[]> {
   const validId = validateAnimeId(id);
-  const res = await kitsu.getAnimeMediaRelationships(validId, limit);
+  const res = await kitsu.getAnimeMediaRelationships(validId, limit, signal);
   const incMap = buildIncludedMap(res.included);
 
   const related: RelatedAnimeItem[] = [];
@@ -621,13 +761,15 @@ export async function getAnimeRelated(
 export async function getMoreAnimeToExplore(
   category: string,
   excludeId?: string | number,
-  limit = 6
+  limit = 6,
+  signal?: AbortSignal
 ): Promise<AnimeItem[]> {
   if (!category || !category.trim()) return [];
   const res = await kitsu.listAnime({
     filter: { categories: category.trim() },
     sort: '-userCount',
-    limit: limit + 2
+    limit: limit + 2,
+    signal
   });
   const incMap = buildIncludedMap(res.included);
   const currentIdStr = excludeId ? String(excludeId) : null;

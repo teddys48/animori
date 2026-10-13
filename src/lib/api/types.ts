@@ -175,6 +175,7 @@ export interface KitsuMediaCharacterResource {
 export interface KitsuPageParams {
   limit?: number;
   offset?: number;
+  signal?: AbortSignal;
 }
 
 export interface KitsuSearchParams extends KitsuPageParams {

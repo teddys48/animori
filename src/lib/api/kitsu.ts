@@ -9,6 +9,7 @@
  *  - Handle rate limiting gracefully without aggressive retry loops.
  *  - Normalize every failure (network, timeout, HTTP, 429, malformed JSON)
  *    into a `KitsuError`.
+ *  - Support request cancellation via AbortSignal.
  *
  * UI components must not import this file directly; use `src/lib/api/anime.ts`.
  */
@@ -171,8 +172,23 @@ export function isKitsuAnime(value: unknown): value is KitsuAnimeResource {
 /* Core request                                                        */
 /* ------------------------------------------------------------------ */
 
-async function performRequest<T>(url: string, validate: (body: unknown) => body is T): Promise<T> {
+async function performRequest<T>(
+  url: string,
+  validate: (body: unknown) => body is T,
+  signal?: AbortSignal
+): Promise<T> {
+  if (signal?.aborted) {
+    throw new DOMException('Request was aborted', 'AbortError');
+  }
+
   await sleep(reserveSlot());
+
+  if (signal?.aborted) {
+    throw new DOMException('Request was aborted', 'AbortError');
+  }
+
+  const timeoutSignal = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
+  const combinedSignal = signal ? AbortSignal.any([signal, timeoutSignal]) : timeoutSignal;
 
   let response: Response;
   try {
@@ -180,9 +196,12 @@ async function performRequest<T>(url: string, validate: (body: unknown) => body 
       headers: {
         Accept: 'application/vnd.api+json'
       },
-      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
+      signal: combinedSignal
     });
   } catch (cause) {
+    if (signal?.aborted) {
+      throw new DOMException('Request was aborted', 'AbortError');
+    }
     if (cause instanceof DOMException && (cause.name === 'TimeoutError' || cause.name === 'AbortError')) {
       throw new KitsuError('timeout', 'Request timed out', { cause });
     }
@@ -211,12 +230,17 @@ async function performRequest<T>(url: string, validate: (body: unknown) => body 
   return body;
 }
 
-function request<T>(path: string, params: Record<string, any>, validate: (body: unknown) => body is T): Promise<T> {
+function request<T>(
+  path: string,
+  params: Record<string, any>,
+  validate: (body: unknown) => body is T,
+  signal?: AbortSignal
+): Promise<T> {
   const url = buildKitsuUrl(path, params);
   const cached = readCache<T>(url);
   if (cached) return cached;
 
-  const promise = performRequest(url, validate);
+  const promise = performRequest(url, validate, signal);
   writeCache(url, promise);
   promise.catch(() => {
     if (cache.get(url)?.promise === promise) cache.delete(url);
@@ -232,11 +256,12 @@ export const kitsu = {
   /** GET /anime/{id} with optional include (e.g. 'genres,categories') */
   async getAnime(
     id: string | number,
-    include?: string
+    include?: string,
+    signal?: AbortSignal
   ): Promise<KitsuSingleResponse<KitsuAnimeResource>> {
     const params: Record<string, any> = {};
     if (include) params.include = include;
-    const res = await request(`/anime/${id}`, params, isSingleResponse);
+    const res = await request(`/anime/${id}`, params, isSingleResponse, signal);
     if (!isKitsuAnime(res.data)) {
       throw new KitsuError('malformed', 'Unexpected anime payload from Kitsu');
     }
@@ -246,7 +271,8 @@ export const kitsu = {
   /** GET /anime/{id}/characters with character and voices.person */
   async getAnimeCharacters(
     id: string | number,
-    limit = 12
+    limit = 12,
+    signal?: AbortSignal
   ): Promise<KitsuListResponse<KitsuMediaCharacterResource>> {
     return request(
       `/anime/${id}/characters`,
@@ -255,14 +281,16 @@ export const kitsu = {
         sort: 'role',
         page: { limit }
       },
-      isListResponse
+      isListResponse,
+      signal
     ) as Promise<KitsuListResponse<KitsuMediaCharacterResource>>;
   },
 
   /** GET /anime/{id}/media-relationships with destination */
   async getAnimeMediaRelationships(
     id: string | number,
-    limit = 20
+    limit = 20,
+    signal?: AbortSignal
   ): Promise<KitsuListResponse<KitsuMediaRelationshipResource>> {
     return request(
       `/anime/${id}/media-relationships`,
@@ -270,19 +298,21 @@ export const kitsu = {
         include: 'destination',
         page: { limit }
       },
-      isListResponse
+      isListResponse,
+      signal
     ) as Promise<KitsuListResponse<KitsuMediaRelationshipResource>>;
   },
 
   /** GET /anime with filter[text] */
-  searchAnime({ text, limit, offset }: KitsuSearchParams): Promise<KitsuListResponse<KitsuAnimeResource>> {
+  searchAnime({ text, limit, offset, signal }: KitsuSearchParams): Promise<KitsuListResponse<KitsuAnimeResource>> {
     return request(
       '/anime',
       {
         filter: { text: text.trim() },
         page: { limit, offset }
       },
-      isListResponse
+      isListResponse,
+      signal
     ) as Promise<KitsuListResponse<KitsuAnimeResource>>;
   },
 
@@ -292,7 +322,8 @@ export const kitsu = {
     sort,
     limit,
     offset,
-    include
+    include,
+    signal
   }: KitsuListAnimeParams): Promise<KitsuListResponse<KitsuAnimeResource>> {
     const params: Record<string, any> = {};
     if (filter) params.filter = filter;
@@ -302,11 +333,11 @@ export const kitsu = {
     }
     if (include) params.include = include;
 
-    return request('/anime', params, isListResponse) as Promise<KitsuListResponse<KitsuAnimeResource>>;
+    return request('/anime', params, isListResponse, signal) as Promise<KitsuListResponse<KitsuAnimeResource>>;
   },
 
   /** GET /trending/anime — official Kitsu trending endpoint */
-  getTrendingAnime(limit = 10): Promise<KitsuListResponse<KitsuAnimeResource>> {
-    return request('/trending/anime', { limit }, isListResponse) as Promise<KitsuListResponse<KitsuAnimeResource>>;
+  getTrendingAnime(limit = 10, signal?: AbortSignal): Promise<KitsuListResponse<KitsuAnimeResource>> {
+    return request('/trending/anime', { limit }, isListResponse, signal) as Promise<KitsuListResponse<KitsuAnimeResource>>;
   }
 };

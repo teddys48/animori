@@ -20,6 +20,7 @@
   import { Resource } from '../lib/api/resource.svelte';
   import { describeError } from '../lib/api/errors';
   import { setDocumentMeta } from '../lib/utils/seo';
+  import { recentStore } from '../lib/stores/recent.svelte';
   import type { AnimeItem, CharacterItem, RelatedAnimeItem } from '../lib/types/anime';
 
   interface Props {
@@ -75,10 +76,19 @@
     });
   });
 
-  // When primary anime loads successfully, update SEO meta & load category recommendations
+  let lastRecordedId: string | null = null;
+
+  // When primary anime loads successfully, update SEO meta, record recent view & load category recommendations
   $effect(() => {
     if (animeResource.data) {
       const anime = animeResource.data;
+      const strId = String(anime.id);
+
+      // Record view once per unique anime ID visited
+      if (lastRecordedId !== strId) {
+        lastRecordedId = strId;
+        recentStore.recordView(anime);
+      }
 
       if (metaCleanup) metaCleanup();
       metaCleanup = setDocumentMeta({

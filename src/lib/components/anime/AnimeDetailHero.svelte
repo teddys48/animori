@@ -3,6 +3,7 @@
   import { FALLBACK_POSTER } from '../../api/anime';
   import Badge from '../ui/Badge.svelte';
   import Button from '../ui/Button.svelte';
+  import AnimeActions from './AnimeActions.svelte';
 
   interface Props {
     anime: AnimeItem;
@@ -55,7 +56,9 @@
         Back to Catalog
       </Button>
 
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <AnimeActions {anime} variant="hero" />
+
         {#if anime.youtubeVideoId}
           <button
             type="button"

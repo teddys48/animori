@@ -14,6 +14,7 @@
     MOCK_UPCOMING_ANIME
   } from '../lib/data/mockAnime';
   import { getTopAnime, getSeasonNow, getUpcomingAnime } from '../lib/api/anime';
+  import { recentStore, recentToAnimeItem } from '../lib/stores/recent.svelte';
   import type { AnimeItem } from '../lib/types/anime';
 
   // State toggle to demonstrate UI states (Loading, Empty, Error)
@@ -330,6 +331,34 @@
           {/each}
         </div>
       </section>
+
+      <!-- ==================== SECTION 4: RECENTLY VIEWED ==================== -->
+      {#if recentStore.items.length > 0}
+        <section id="recent-views" aria-labelledby="section-recent-title">
+          <div class="flex items-center justify-between">
+            <SectionHeader
+              title="Recently Viewed"
+              subtitle="Anime titles you recently checked out"
+              badge="History"
+              badgeVariant="accent"
+            />
+            <button
+              type="button"
+              onclick={() => recentStore.clear()}
+              class="text-xs text-[var(--text-muted)] hover:text-rose-500 transition-colors font-medium cursor-pointer"
+            >
+              Clear History
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6 mt-6">
+            {#each recentStore.items.slice(0, 6) as item (item.id)}
+              {@const anime = recentToAnimeItem(item)}
+              <AnimeCard {anime} />
+            {/each}
+          </div>
+        </section>
+      {/if}
     {/if}
   </Container>
 </div>

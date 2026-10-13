@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { AnimeItem } from '../../types/anime';
   import { FALLBACK_POSTER } from '../../api/anime';
+  import AnimeActions from './AnimeActions.svelte';
+  import { userLibrary, getStatusMeta } from '../../stores/library.svelte';
 
   interface Props {
     anime: AnimeItem;
@@ -52,6 +54,9 @@
     isUpcoming ? (anime.airedShort ?? 'TBA') : (anime.year ? String(anime.year) : (anime.airedShort ?? 'TBA'))
   );
   let altText = $derived(`Poster of ${anime.title}`);
+
+  let userStatus = $derived(userLibrary.getWatchStatus(anime.id));
+  let userWatchMeta = $derived(getStatusMeta(userStatus));
 </script>
 
 <article
@@ -83,40 +88,38 @@
     <!-- Subtle bottom gradient overlay strictly for overlay readability -->
     <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent pointer-events-none"></div>
 
-    <!-- Top floating badges: Type & Score (Guaranteed high contrast against any poster in dark & light modes) -->
-    <div class="absolute top-2 left-2 right-2 flex items-center justify-between gap-1 pointer-events-none">
-      {#if anime.type}
-        {@const typeMeta = getTypeBadgeMeta(anime.type)}
-        <div
-          class="flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-black/85 {typeMeta.border} border text-white text-[10px] sm:text-[11px] font-bold backdrop-blur-md shadow-md shadow-black/50 select-none tracking-wide shrink-0"
-        >
-          <span class="w-1.5 h-1.5 rounded-full {typeMeta.dot} shrink-0 shadow-xs"></span>
-          <span>{anime.type}</span>
-        </div>
-      {:else}
-        <span></span>
-      {/if}
+    <!-- Top floating bar: Type & Score (left) and Personalization actions (right) -->
+    <div class="absolute top-2 left-2 right-2 flex items-center justify-between gap-1 z-20">
+      <div class="flex items-center gap-1 min-w-0">
+        {#if anime.type}
+          {@const typeMeta = getTypeBadgeMeta(anime.type)}
+          <div
+            class="flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-lg bg-black/85 {typeMeta.border} border text-white text-[10px] sm:text-[11px] font-bold backdrop-blur-md shadow-md shadow-black/50 select-none tracking-wide shrink-0"
+          >
+            <span class="w-1.5 h-1.5 rounded-full {typeMeta.dot} shrink-0 shadow-xs"></span>
+            <span>{anime.type}</span>
+          </div>
+        {/if}
 
-      {#if anime.score !== null && anime.score > 0}
-        <div
-          class="flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-black/85 border border-amber-400/60 text-amber-300 text-[10px] sm:text-xs font-bold backdrop-blur-md shadow-md shadow-black/50 shrink-0"
-          aria-label="Score {anime.score.toFixed(1)}"
-        >
-          <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 text-amber-400 shrink-0" viewBox="0 0 20 20" aria-hidden="true">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-          <span>{anime.score.toFixed(1)}</span>
-        </div>
-      {:else if isUpcoming}
-        <div class="flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-black/85 border border-emerald-400/60 text-emerald-300 text-[10px] sm:text-xs font-bold backdrop-blur-md shadow-md shadow-black/50 shrink-0">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-xs"></span>
-          <span>Upcoming</span>
-        </div>
-      {:else}
-        <div class="flex items-center px-1.5 py-0.5 rounded-lg bg-black/85 border border-white/20 text-white/70 text-[10px] sm:text-xs font-medium backdrop-blur-md shadow-md shrink-0">
-          <span>N/A</span>
-        </div>
-      {/if}
+        {#if anime.score !== null && anime.score > 0}
+          <div
+            class="flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-lg bg-black/85 border border-amber-400/60 text-amber-300 text-[10px] sm:text-xs font-bold backdrop-blur-md shadow-md shadow-black/50 shrink-0"
+            aria-label="Score {anime.score.toFixed(1)}"
+          >
+            <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 text-amber-400 shrink-0" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            <span>{anime.score.toFixed(1)}</span>
+          </div>
+        {:else if isUpcoming}
+          <div class="flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-lg bg-black/85 border border-emerald-400/60 text-emerald-300 text-[10px] sm:text-xs font-bold backdrop-blur-md shadow-md shadow-black/50 shrink-0">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-xs"></span>
+            <span>Upcoming</span>
+          </div>
+        {/if}
+      </div>
+
+      <AnimeActions {anime} variant="card" />
     </div>
 
     <!-- Bottom overlay info on poster (Year / Aired date + Episodes) -->
@@ -138,22 +141,30 @@
         {anime.title}
       </h3>
 
-      {#if statusInfo || (anime.studios && anime.studios.length > 0)}
-        <p class="flex items-center gap-1.5 text-[11px] text-[var(--text-muted)] min-w-0">
-          {#if statusInfo}
-            <span class="inline-flex items-center gap-1 shrink-0">
-              <span class="w-1.5 h-1.5 rounded-full {statusInfo.dot}" aria-hidden="true"></span>
-              {statusInfo.text}
-            </span>
-          {/if}
-          {#if statusInfo && anime.studios && anime.studios.length > 0}
+      <div class="flex flex-wrap items-center gap-1.5 text-[11px] text-[var(--text-muted)] min-w-0">
+        {#if userWatchMeta}
+          <span class="inline-flex items-center gap-1 font-semibold text-[#198754] dark:text-[#20c997]">
+            <span class="w-1.5 h-1.5 rounded-full {userWatchMeta.dotColor}"></span>
+            {userWatchMeta.label}
+          </span>
+          {#if statusInfo || (anime.studios && anime.studios.length > 0)}
             <span aria-hidden="true">·</span>
           {/if}
-          {#if anime.studios && anime.studios.length > 0}
-            <span class="truncate">{anime.studios.join(', ')}</span>
-          {/if}
-        </p>
-      {/if}
+        {/if}
+
+        {#if statusInfo}
+          <span class="inline-flex items-center gap-1 shrink-0">
+            <span class="w-1.5 h-1.5 rounded-full {statusInfo.dot}" aria-hidden="true"></span>
+            {statusInfo.text}
+          </span>
+        {/if}
+        {#if statusInfo && anime.studios && anime.studios.length > 0}
+          <span aria-hidden="true">·</span>
+        {/if}
+        {#if anime.studios && anime.studios.length > 0}
+          <span class="truncate">{anime.studios.join(', ')}</span>
+        {/if}
+      </div>
     </div>
 
     <!-- Genres / Tags -->

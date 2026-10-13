@@ -3,6 +3,7 @@
   import Badge from '../components/ui/Badge.svelte';
   import ThemeToggle from '../components/ui/ThemeToggle.svelte';
   import { router, buildHref } from '../router/router.svelte';
+  import { userLibrary } from '../stores/library.svelte';
 
   interface Props {
     activeRoute?: string;
@@ -18,7 +19,9 @@
     { name: 'Anime', href: '/anime' },
     { name: 'Top', href: '/top' },
     { name: 'Seasonal', href: '/seasonal' },
-    { name: 'Upcoming', href: '/upcoming' }
+    { name: 'Upcoming', href: '/upcoming' },
+    { name: 'Favorites', href: '/favorites' },
+    { name: 'Watchlist', href: '/watchlist' }
   ];
 
   function toggleMobileMenu() {
@@ -47,7 +50,7 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between gap-3 sm:gap-4">
       <!-- Brand Logo -->
-      <a href="/" class="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#198754] rounded-xl p-1">
+      <a href="/" class="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#198754] rounded-xl p-1 shrink-0">
         <div class="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#198754] via-[#20c997] to-cyan-400 shadow-sm shadow-[#198754]/30 group-hover:shadow-[#198754]/50 transition-shadow">
           <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -66,16 +69,25 @@
         {#each navLinks as link}
           <a
             href={link.href}
-            class="px-3.5 py-1.5 rounded-xl transition-all duration-200 {activeRoute === link.name ? 'text-[var(--text-primary)] bg-[var(--glass-bg-elevated)] font-semibold border border-[var(--glass-border-hover)] shadow-xs' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg-subtle)]'}"
+            class="px-3 py-1.5 rounded-xl transition-all duration-200 inline-flex items-center gap-1.5 {activeRoute === link.name ? 'text-[var(--text-primary)] bg-[var(--glass-bg-elevated)] font-semibold border border-[var(--glass-border-hover)] shadow-xs' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg-subtle)]'}"
             aria-current={activeRoute === link.name ? 'page' : undefined}
           >
-            {link.name}
+            <span>{link.name}</span>
+            {#if link.name === 'Favorites' && userLibrary.countFavorites > 0}
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-500 dark:text-rose-400">
+                {userLibrary.countFavorites}
+              </span>
+            {:else if link.name === 'Watchlist' && userLibrary.countWatchlist > 0}
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#198754]/20 text-[#198754] dark:text-[#20c997]">
+                {userLibrary.countWatchlist}
+              </span>
+            {/if}
           </a>
         {/each}
       </nav>
 
       <!-- Global Search Input in Navbar -->
-      <div class="hidden sm:flex items-center flex-1 max-w-xs md:max-w-sm lg:max-w-md mx-2">
+      <div class="hidden sm:flex items-center flex-1 max-w-xs md:max-w-sm mx-2">
         <form onsubmit={handleSearch} class="w-full relative">
           <Input
             placeholder="Search anime titles... (Press Enter)"
@@ -108,15 +120,15 @@
       </div>
 
       <!-- Action area: Status Badge + Theme Toggle -->
-      <div class="hidden sm:flex items-center gap-2.5">
+      <div class="hidden sm:flex items-center gap-2.5 shrink-0">
         <Badge variant="accent" size="sm">
-          Phase 2 Discovery
+          Phase 4
         </Badge>
         <ThemeToggle />
       </div>
 
       <!-- Mobile Right Controls: Theme Toggle + Menu Button -->
-      <div class="flex items-center gap-1.5 sm:hidden">
+      <div class="flex items-center gap-1.5 md:hidden">
         <ThemeToggle />
         <button
           type="button"
@@ -141,7 +153,7 @@
 
   <!-- Mobile Drawer Menu -->
   {#if isMobileMenuOpen}
-    <div class="sm:hidden border-t border-[var(--glass-border)] bg-[var(--nav-bg)] backdrop-blur-2xl px-4 pt-3 pb-6 space-y-4 shadow-lg">
+    <div class="md:hidden border-t border-[var(--glass-border)] bg-[var(--nav-bg)] backdrop-blur-2xl px-4 pt-3 pb-6 space-y-4 shadow-lg">
       <!-- Search Input on mobile -->
       <form onsubmit={handleSearch} class="w-full">
         <Input
@@ -165,17 +177,26 @@
           <a
             href={link.href}
             onclick={() => (isMobileMenuOpen = false)}
-            class="px-3.5 py-2.5 rounded-2xl text-base font-medium transition-colors {activeRoute === link.name ? 'bg-[#198754]/20 text-[#198754] dark:text-[#20c997] font-semibold border border-[#198754]/30' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg-subtle)]'}"
+            class="px-3.5 py-2.5 rounded-2xl text-base font-medium transition-colors flex items-center justify-between {activeRoute === link.name ? 'bg-[#198754]/20 text-[#198754] dark:text-[#20c997] font-semibold border border-[#198754]/30' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg-subtle)]'}"
             aria-current={activeRoute === link.name ? 'page' : undefined}
           >
-            {link.name}
+            <span>{link.name}</span>
+            {#if link.name === 'Favorites' && userLibrary.countFavorites > 0}
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-500 dark:text-rose-400">
+                {userLibrary.countFavorites}
+              </span>
+            {:else if link.name === 'Watchlist' && userLibrary.countWatchlist > 0}
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-[#198754]/20 text-[#198754] dark:text-[#20c997]">
+                {userLibrary.countWatchlist}
+              </span>
+            {/if}
           </a>
         {/each}
       </nav>
 
       <div class="pt-3 border-t border-[var(--glass-border)] flex items-center justify-between">
         <span class="text-xs text-[var(--text-muted)]">Animori Discovery</span>
-        <Badge variant="accent" size="sm">Phase 2</Badge>
+        <Badge variant="accent" size="sm">Phase 4</Badge>
       </div>
     </div>
   {/if}
