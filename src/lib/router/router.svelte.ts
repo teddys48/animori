@@ -31,7 +31,9 @@ class Router {
       else history.pushState(null, '', next);
     }
     this.#sync();
-    if (scroll) window.scrollTo({ top: 0 });
+    if (scroll) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
   }
 
   #sync = (): void => {

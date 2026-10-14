@@ -46,7 +46,7 @@
   }
 </script>
 
-<header class="sticky top-0 z-50 w-full border-b border-[var(--glass-border)] bg-[var(--nav-bg)] backdrop-blur-xl transition-colors duration-200 shadow-sm">
+<header class="sticky top-0 z-50 w-full border-b border-[var(--glass-border)] bg-[var(--nav-bg)] backdrop-blur-xl transition-colors duration-200 shadow-sm isolate [transform:translateZ(0)]">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between gap-3 sm:gap-4">
       <!-- Brand Logo -->
@@ -69,7 +69,7 @@
         {#each navLinks as link}
           <a
             href={link.href}
-            class="px-3 py-1.5 rounded-xl transition-all duration-200 inline-flex items-center gap-1.5 {activeRoute === link.name ? 'text-[var(--text-primary)] bg-[var(--glass-bg-elevated)] font-semibold border border-[var(--glass-border-hover)] shadow-xs' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg-subtle)]'}"
+            class="px-3 py-1.5 rounded-xl transition-colors duration-150 inline-flex items-center gap-1.5 border {activeRoute === link.name ? 'text-[var(--text-primary)] bg-[var(--glass-bg-elevated)] font-semibold border-[var(--glass-border-hover)] shadow-xs' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg-subtle)] border-transparent'}"
             aria-current={activeRoute === link.name ? 'page' : undefined}
           >
             <span>{link.name}</span>
@@ -177,7 +177,7 @@
           <a
             href={link.href}
             onclick={() => (isMobileMenuOpen = false)}
-            class="px-3.5 py-2.5 rounded-2xl text-base font-medium transition-colors flex items-center justify-between {activeRoute === link.name ? 'bg-[#198754]/20 text-[#198754] dark:text-[#20c997] font-semibold border border-[#198754]/30' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg-subtle)]'}"
+            class="px-3.5 py-2.5 rounded-2xl text-base font-medium transition-colors duration-150 flex items-center justify-between border {activeRoute === link.name ? 'bg-[#198754]/20 text-[#198754] dark:text-[#20c997] font-semibold border-[#198754]/30' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg-subtle)] border-transparent'}"
             aria-current={activeRoute === link.name ? 'page' : undefined}
           >
             <span>{link.name}</span>
