@@ -1,0 +1,996 @@
+{
+  "data": [
+    {
+      "id": "2",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/2"
+      },
+      "attributes": {
+        "createdAt": "2013-02-20T16:00:13.609Z",
+        "updatedAt": "2026-10-14T00:00:49.442Z",
+        "slug": "cowboy-bebop-tengoku-no-tobira",
+        "synopsis": "Another day, another bounty—such is the life of the often unlucky crew of the Bebop.",
+        "titles": {
+          "en": "Cowboy Bebop: The Movie",
+          "ja_jp": "カウボーイビバップ 天国の扉"
+        },
+        "canonicalTitle": "Cowboy Bebop: The Movie",
+        "averageRating": "84.2",
+        "startDate": "2001-09-01",
+        "subtype": "movie",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/2/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/2/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/2/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/2/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/2/large.jpg"
+        },
+        "episodeCount": 1,
+        "episodeLength": 115,
+        "showType": "movie"
+      }
+    },
+    {
+      "id": "1",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/1"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "cowboy-bebop",
+        "synopsis": "Synopsis for Cowboy Bebop. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Cowboy Bebop",
+          "en_jp": "Cowboy Bebop",
+          "ja_jp": "カウボーイビバップ"
+        },
+        "canonicalTitle": "Cowboy Bebop",
+        "averageRating": "82.5",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "1998-04-03",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/1/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/1/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/1/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/1/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/1/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "46474",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/46474"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "frieren-beyond-journey-s-end",
+        "synopsis": "Synopsis for Frieren: Beyond Journey's End. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Frieren: Beyond Journey's End",
+          "en_jp": "Frieren: Beyond Journey's End",
+          "ja_jp": "葬送のフリーレン"
+        },
+        "canonicalTitle": "Frieren: Beyond Journey's End",
+        "averageRating": "93.4",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2023-09-29",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/46474/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/46474/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/46474/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/46474/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/46474/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "3936",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/3936"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "fullmetal-alchemist-brotherhood",
+        "synopsis": "Synopsis for Fullmetal Alchemist: Brotherhood. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Fullmetal Alchemist: Brotherhood",
+          "en_jp": "Fullmetal Alchemist: Brotherhood",
+          "ja_jp": "Fullmetal Alchemist: Brotherhood"
+        },
+        "canonicalTitle": "Fullmetal Alchemist: Brotherhood",
+        "averageRating": "91.2",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2009-04-05",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/3936/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/3936/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/3936/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/3936/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/3936/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "5618",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/5618"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "steins-gate",
+        "synopsis": "Synopsis for Steins;Gate. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Steins;Gate",
+          "en_jp": "Steins;Gate",
+          "ja_jp": "Steins;Gate"
+        },
+        "canonicalTitle": "Steins;Gate",
+        "averageRating": "91.0",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2011-04-06",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/5618/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/5618/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/5618/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/5618/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/5618/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "6448",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/6448"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "hunter-x-hunter-2011-",
+        "synopsis": "Synopsis for Hunter x Hunter (2011). An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Hunter x Hunter (2011)",
+          "en_jp": "Hunter x Hunter (2011)",
+          "ja_jp": "Hunter x Hunter (2011)"
+        },
+        "canonicalTitle": "Hunter x Hunter (2011)",
+        "averageRating": "90.5",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2011-10-02",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/6448/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/6448/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/6448/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/6448/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/6448/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "7442",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/7442"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "attack-on-titan",
+        "synopsis": "Synopsis for Attack on Titan. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Attack on Titan",
+          "en_jp": "Attack on Titan",
+          "ja_jp": "Attack on Titan"
+        },
+        "canonicalTitle": "Attack on Titan",
+        "averageRating": "88.8",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2013-04-07",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/7442/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/7442/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/7442/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/7442/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/7442/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "12",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/12"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "one-piece",
+        "synopsis": "Synopsis for One Piece. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "One Piece",
+          "en_jp": "One Piece",
+          "ja_jp": "One Piece"
+        },
+        "canonicalTitle": "One Piece",
+        "averageRating": "86.5",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "1999-10-20",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "current",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/12/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/12/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/12/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/12/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/12/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "11",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/11"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "naruto",
+        "synopsis": "Synopsis for Naruto. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Naruto",
+          "en_jp": "Naruto",
+          "ja_jp": "Naruto"
+        },
+        "canonicalTitle": "Naruto",
+        "averageRating": "79.8",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2002-10-03",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/11/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/11/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/11/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/11/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/11/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "100",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/100"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "spirited-away",
+        "synopsis": "Synopsis for Spirited Away. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Spirited Away",
+          "en_jp": "Spirited Away",
+          "ja_jp": "Spirited Away"
+        },
+        "canonicalTitle": "Spirited Away",
+        "averageRating": "89.2",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2001-07-20",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "movie",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/100/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/100/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/100/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/100/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/100/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "movie"
+      }
+    },
+    {
+      "id": "101",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/101"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "your-name",
+        "synopsis": "Synopsis for Your Name. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Your Name",
+          "en_jp": "Your Name",
+          "ja_jp": "Your Name"
+        },
+        "canonicalTitle": "Your Name",
+        "averageRating": "90.1",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2016-08-26",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "movie",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/101/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/101/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/101/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/101/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/101/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "movie"
+      }
+    },
+    {
+      "id": "102",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/102"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "demon-slayer-kimetsu-no-yaiba",
+        "synopsis": "Synopsis for Demon Slayer: Kimetsu no Yaiba. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Demon Slayer: Kimetsu no Yaiba",
+          "en_jp": "Demon Slayer: Kimetsu no Yaiba",
+          "ja_jp": "Demon Slayer: Kimetsu no Yaiba"
+        },
+        "canonicalTitle": "Demon Slayer: Kimetsu no Yaiba",
+        "averageRating": "87.4",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2019-04-06",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/102/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/102/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/102/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/102/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/102/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "103",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/103"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "jujutsu-kaisen",
+        "synopsis": "Synopsis for Jujutsu Kaisen. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Jujutsu Kaisen",
+          "en_jp": "Jujutsu Kaisen",
+          "ja_jp": "Jujutsu Kaisen"
+        },
+        "canonicalTitle": "Jujutsu Kaisen",
+        "averageRating": "87.0",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2020-10-03",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/103/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/103/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/103/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/103/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/103/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "104",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/104"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "chainsaw-man",
+        "synopsis": "Synopsis for Chainsaw Man. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Chainsaw Man",
+          "en_jp": "Chainsaw Man",
+          "ja_jp": "Chainsaw Man"
+        },
+        "canonicalTitle": "Chainsaw Man",
+        "averageRating": "84.5",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2022-10-12",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/104/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/104/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/104/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/104/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/104/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "105",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/105"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "bocchi-the-rock-",
+        "synopsis": "Synopsis for Bocchi the Rock!. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Bocchi the Rock!",
+          "en_jp": "Bocchi the Rock!",
+          "ja_jp": "Bocchi the Rock!"
+        },
+        "canonicalTitle": "Bocchi the Rock!",
+        "averageRating": "88.2",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2022-10-09",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/105/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/105/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/105/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/105/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/105/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "106",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/106"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "mob-psycho-100",
+        "synopsis": "Synopsis for Mob Psycho 100. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Mob Psycho 100",
+          "en_jp": "Mob Psycho 100",
+          "ja_jp": "Mob Psycho 100"
+        },
+        "canonicalTitle": "Mob Psycho 100",
+        "averageRating": "86.9",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2016-07-11",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/106/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/106/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/106/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/106/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/106/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "107",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/107"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "vinland-saga",
+        "synopsis": "Synopsis for Vinland Saga. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Vinland Saga",
+          "en_jp": "Vinland Saga",
+          "ja_jp": "Vinland Saga"
+        },
+        "canonicalTitle": "Vinland Saga",
+        "averageRating": "88.5",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2019-07-08",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/107/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/107/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/107/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/107/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/107/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "108",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/108"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "oshi-no-ko",
+        "synopsis": "Synopsis for Oshi no Ko. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Oshi no Ko",
+          "en_jp": "Oshi no Ko",
+          "ja_jp": "Oshi no Ko"
+        },
+        "canonicalTitle": "Oshi no Ko",
+        "averageRating": "85.8",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2023-04-12",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/108/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/108/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/108/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/108/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/108/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "109",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/109"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "solo-leveling",
+        "synopsis": "Synopsis for Solo Leveling. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Solo Leveling",
+          "en_jp": "Solo Leveling",
+          "ja_jp": "Solo Leveling"
+        },
+        "canonicalTitle": "Solo Leveling",
+        "averageRating": "83.6",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2024-01-07",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/109/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/109/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/109/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/109/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/109/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "110",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/110"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "kaiju-no-8",
+        "synopsis": "Synopsis for Kaiju No. 8. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Kaiju No. 8",
+          "en_jp": "Kaiju No. 8",
+          "ja_jp": "Kaiju No. 8"
+        },
+        "canonicalTitle": "Kaiju No. 8",
+        "averageRating": "82.0",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2024-04-13",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/110/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/110/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/110/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/110/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/110/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "111",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/111"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "upcoming-epic-anime-2026",
+        "synopsis": "Synopsis for Upcoming Epic Anime 2026. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Upcoming Epic Anime 2026",
+          "en_jp": "Upcoming Epic Anime 2026",
+          "ja_jp": "Upcoming Epic Anime 2026"
+        },
+        "canonicalTitle": "Upcoming Epic Anime 2026",
+        "averageRating": "80.0",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2026-10-01",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "upcoming",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/111/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/111/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/111/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/111/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/111/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    },
+    {
+      "id": "2001",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/2001"
+      },
+      "attributes": {
+        "createdAt": "2026-01-01T00:00:00.000Z",
+        "slug": "upcoming-anime-1",
+        "synopsis": "Synopsis for Upcoming Anime 1. Coming in future seasons.",
+        "titles": {
+          "en": "Upcoming Hit 1",
+          "en_jp": "Upcoming Hit 1"
+        },
+        "canonicalTitle": "Upcoming Hit 1",
+        "averageRating": "82.0",
+        "startDate": "2026-11-01",
+        "subtype": "TV",
+        "status": "upcoming",
+        "posterImage": {
+          "medium": "https://media.kitsu.app/anime/poster_images/2001/medium.jpg"
+        },
+        "episodeCount": 12
+      }
+    },
+    {
+      "id": "2002",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/2002"
+      },
+      "attributes": {
+        "createdAt": "2026-01-01T00:00:00.000Z",
+        "slug": "upcoming-anime-2",
+        "synopsis": "Synopsis for Upcoming Anime 2. Coming in future seasons.",
+        "titles": {
+          "en": "Upcoming Hit 2",
+          "en_jp": "Upcoming Hit 2"
+        },
+        "canonicalTitle": "Upcoming Hit 2",
+        "averageRating": "82.0",
+        "startDate": "2026-11-01",
+        "subtype": "TV",
+        "status": "upcoming",
+        "posterImage": {
+          "medium": "https://media.kitsu.app/anime/poster_images/2002/medium.jpg"
+        },
+        "episodeCount": 12
+      }
+    },
+    {
+      "id": "2003",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/2003"
+      },
+      "attributes": {
+        "createdAt": "2026-01-01T00:00:00.000Z",
+        "slug": "upcoming-anime-3",
+        "synopsis": "Synopsis for Upcoming Anime 3. Coming in future seasons.",
+        "titles": {
+          "en": "Upcoming Hit 3",
+          "en_jp": "Upcoming Hit 3"
+        },
+        "canonicalTitle": "Upcoming Hit 3",
+        "averageRating": "82.0",
+        "startDate": "2026-11-01",
+        "subtype": "TV",
+        "status": "upcoming",
+        "posterImage": {
+          "medium": "https://media.kitsu.app/anime/poster_images/2003/medium.jpg"
+        },
+        "episodeCount": 12
+      }
+    },
+    {
+      "id": "2004",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/2004"
+      },
+      "attributes": {
+        "createdAt": "2026-01-01T00:00:00.000Z",
+        "slug": "upcoming-anime-4",
+        "synopsis": "Synopsis for Upcoming Anime 4. Coming in future seasons.",
+        "titles": {
+          "en": "Upcoming Hit 4",
+          "en_jp": "Upcoming Hit 4"
+        },
+        "canonicalTitle": "Upcoming Hit 4",
+        "averageRating": "82.0",
+        "startDate": "2026-11-01",
+        "subtype": "TV",
+        "status": "upcoming",
+        "posterImage": {
+          "medium": "https://media.kitsu.app/anime/poster_images/2004/medium.jpg"
+        },
+        "episodeCount": 12
+      }
+    },
+    {
+      "id": "2005",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/2005"
+      },
+      "attributes": {
+        "createdAt": "2026-01-01T00:00:00.000Z",
+        "slug": "upcoming-anime-5",
+        "synopsis": "Synopsis for Upcoming Anime 5. Coming in future seasons.",
+        "titles": {
+          "en": "Upcoming Hit 5",
+          "en_jp": "Upcoming Hit 5"
+        },
+        "canonicalTitle": "Upcoming Hit 5",
+        "averageRating": "82.0",
+        "startDate": "2026-11-01",
+        "subtype": "TV",
+        "status": "upcoming",
+        "posterImage": {
+          "medium": "https://media.kitsu.app/anime/poster_images/2005/medium.jpg"
+        },
+        "episodeCount": 12
+      }
+    },
+    {
+      "id": "2006",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/2006"
+      },
+      "attributes": {
+        "createdAt": "2026-01-01T00:00:00.000Z",
+        "slug": "upcoming-anime-6",
+        "synopsis": "Synopsis for Upcoming Anime 6. Coming in future seasons.",
+        "titles": {
+          "en": "Upcoming Hit 6",
+          "en_jp": "Upcoming Hit 6"
+        },
+        "canonicalTitle": "Upcoming Hit 6",
+        "averageRating": "82.0",
+        "startDate": "2026-11-01",
+        "subtype": "TV",
+        "status": "upcoming",
+        "posterImage": {
+          "medium": "https://media.kitsu.app/anime/poster_images/2006/medium.jpg"
+        },
+        "episodeCount": 12
+      }
+    }
+  ],
+  "meta": {
+    "count": 12500
+  },
+  "links": {
+    "first": "https://kitsu.io/api/edge/anime?page%5Blimit%5D=20&page%5Boffset%5D=0",
+    "next": "https://kitsu.io/api/edge/anime?page%5Blimit%5D=20&page%5Boffset%5D=20",
+    "last": "https://kitsu.io/api/edge/anime?page%5Blimit%5D=20&page%5Boffset%5D=12480"
+  }
+}

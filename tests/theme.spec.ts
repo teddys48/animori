@@ -1,6 +1,10 @@
+import { setupKitsuMocking } from './helpers/mockKitsu';
 import { test, expect } from '@playwright/test';
 
 test.describe('Animori Theme System Acceptance Criteria', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupKitsuMocking(page);
+  });
   test('Dark mode is the default and system preference is respected when no stored preference exists', async ({ page }) => {
     // Test dark system preference
     await page.emulateMedia({ colorScheme: 'dark' });

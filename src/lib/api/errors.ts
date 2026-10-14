@@ -60,20 +60,20 @@ export function describeError(error: unknown): ErrorDescription {
       return {
         title: 'Slow down a little',
         message:
-          'The anime data provider (Kitsu) is receiving too many requests right now. Please wait a few seconds and try again.',
+          'The anime service is receiving too many requests right now. Please wait a few seconds and try again.',
         retryable: true
       };
     case 'network':
       return {
         title: 'Connection problem',
         message:
-          'We could not reach the anime data provider. Check your internet connection and try again.',
+          'We could not reach the anime service. Check your internet connection and try again.',
         retryable: true
       };
     case 'timeout':
       return {
         title: 'Request timed out',
-        message: 'The anime data provider took too long to respond. Please try again.',
+        message: 'The anime service took too long to respond. Please try again.',
         retryable: true
       };
     case 'not-found':
@@ -92,7 +92,7 @@ export function describeError(error: unknown): ErrorDescription {
       return {
         title: 'Unable to load anime',
         message:
-          'The anime data provider (Kitsu) is having trouble at the moment. Please try again later.',
+          'The anime service is having trouble at the moment. Please try again later.',
         retryable: true
       };
     case 'malformed':

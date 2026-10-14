@@ -1,0 +1,48 @@
+{
+  "data": [
+    {
+      "id": "11",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/11"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "naruto",
+        "synopsis": "Synopsis for Naruto. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Naruto",
+          "en_jp": "Naruto",
+          "ja_jp": "Naruto"
+        },
+        "canonicalTitle": "Naruto",
+        "averageRating": "79.8",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2002-10-03",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/11/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/11/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/11/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/11/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/11/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    }
+  ],
+  "meta": {
+    "count": 1
+  },
+  "links": {}
+}

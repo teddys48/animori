@@ -1,6 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { setupKitsuMocking } from './helpers/mockKitsu';
 
 test.describe('Animori Phase 3 — Anime Detail Page & Related Information', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupKitsuMocking(page);
+  });
+
   test('Anime detail page loads real Kitsu data for /anime/1', async ({ page }) => {
     await page.goto('/anime/1');
 

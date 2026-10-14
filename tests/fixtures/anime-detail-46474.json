@@ -1,0 +1,66 @@
+{
+  "data": {
+    "id": "46474",
+    "type": "anime",
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/46474"
+    },
+    "attributes": {
+      "createdAt": "2022-09-13T09:00:00.000Z",
+      "updatedAt": "2026-10-14T00:00:00.000Z",
+      "slug": "frieren-beyond-journeys-end",
+      "synopsis": "The adventure is over but life goes on for an elf mage just beginning to learn what living is all about. Elf mage Frieren and her courageous fellow adventurers have defeated the Demon King and brought peace to the land.",
+      "titles": {
+        "en": "Frieren: Beyond Journey's End",
+        "en_jp": "Sousou no Frieren",
+        "ja_jp": "葬送のフリーレン"
+      },
+      "canonicalTitle": "Frieren: Beyond Journey's End",
+      "averageRating": "93.4",
+      "userCount": 210000,
+      "favoritesCount": 18500,
+      "startDate": "2023-09-29",
+      "endDate": "2024-03-22",
+      "popularityRank": 12,
+      "ratingRank": 1,
+      "ageRating": "PG",
+      "ageRatingGuide": "Teens 13 or older",
+      "subtype": "TV",
+      "status": "finished",
+      "posterImage": {
+        "tiny": "https://media.kitsu.app/anime/46474/poster_image/tiny.jpeg",
+        "small": "https://media.kitsu.app/anime/46474/poster_image/small.jpeg",
+        "medium": "https://media.kitsu.app/anime/46474/poster_image/medium.jpeg",
+        "large": "https://media.kitsu.app/anime/46474/poster_image/large.jpeg",
+        "original": "https://media.kitsu.app/anime/46474/poster_image/original.jpeg"
+      },
+      "coverImage": {
+        "tiny": "https://media.kitsu.app/anime/46474/cover_image/tiny.jpeg",
+        "small": "https://media.kitsu.app/anime/46474/cover_image/small.jpeg",
+        "large": "https://media.kitsu.app/anime/46474/cover_image/large.jpeg",
+        "original": "https://media.kitsu.app/anime/46474/cover_image/original.jpeg"
+      },
+      "episodeCount": 28,
+      "episodeLength": 24,
+      "showType": "TV"
+    }
+  },
+  "included": [
+    {
+      "id": "10",
+      "type": "categories",
+      "attributes": {
+        "title": "Fantasy",
+        "slug": "fantasy"
+      }
+    },
+    {
+      "id": "11",
+      "type": "categories",
+      "attributes": {
+        "title": "Adventure",
+        "slug": "adventure"
+      }
+    }
+  ]
+}

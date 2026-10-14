@@ -1,0 +1,35 @@
+{
+  "data": [
+    {
+      "id": "23427",
+      "type": "mediaRelationships",
+      "attributes": {
+        "role": "side_story"
+      },
+      "relationships": {
+        "destination": {
+          "data": { "type": "anime", "id": "2" }
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "id": "2",
+      "type": "anime",
+      "attributes": {
+        "canonicalTitle": "Cowboy Bebop: Knockin' on Heaven's Door",
+        "titles": {
+          "en": "Cowboy Bebop: The Movie"
+        },
+        "subtype": "movie",
+        "startDate": "2001-09-01",
+        "averageRating": "84.2",
+        "posterImage": {
+          "medium": "https://media.kitsu.app/anime/poster_images/2/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/2/large.jpg"
+        }
+      }
+    }
+  ]
+}

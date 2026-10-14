@@ -1,6 +1,11 @@
+import { setupKitsuMocking } from './helpers/mockKitsu';
 import { test, expect } from '@playwright/test';
 
 test.describe('Animori Phase 1 — Smoke & Foundation Tests', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupKitsuMocking(page);
+  });
+
   test('homepage loads successfully with title and logo', async ({ page }) => {
     await page.goto('/');
 
@@ -41,24 +46,18 @@ test.describe('Animori Phase 1 — Smoke & Foundation Tests', () => {
     expect(count).toBeGreaterThanOrEqual(10);
   });
 
-  test('UI state switcher toggles loading skeleton and error states', async ({ page }) => {
+  test('homepage renders clean production layout without development debug toolbars', async ({ page }) => {
     await page.goto('/');
 
-    // Switch to Loading Skeleton
-    await page.click('button:has-text("Loading Skeleton")');
-    await expect(page.locator('text=Loading Skeleton State')).toBeVisible();
-
-    // Switch to Empty State
-    await page.click('button:has-text("Empty State")');
-    await expect(page.locator('text=No Seasonal Anime Matches')).toBeVisible();
-
-    // Switch to Error State
-    await page.click('button:has-text("Error State")');
-    await expect(page.locator('text=Unable to Connect to Anime Source')).toBeVisible();
-
-    // Return to Normal View
-    await page.click('button:has-text("Normal View")');
+    // Core content sections are directly visible
     await expect(page.getByRole('heading', { name: 'Popular Anime' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Currently Airing' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Upcoming Releases' })).toBeVisible();
+
+    // Verify no development-only state toolbars or demo badges exist
+    await expect(page.locator('text=UI Component States')).not.toBeVisible();
+    await expect(page.locator('text=Demo View')).not.toBeVisible();
+    await expect(page.locator('text=Retry Simulation')).not.toBeVisible();
   });
 
   test('no horizontal scrollbar on responsive viewport', async ({ page }) => {

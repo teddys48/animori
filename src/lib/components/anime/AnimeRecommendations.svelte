@@ -26,7 +26,7 @@
       </div>
       {#if category}
         <p class="text-xs text-[var(--text-muted)] pl-3.5">
-          Popular titles in the <span class="font-semibold text-[var(--text-secondary)]">{category}</span> category from Kitsu
+          Popular titles in the <span class="font-semibold text-[var(--text-secondary)]">{category}</span> category
         </p>
       {/if}
     </div>

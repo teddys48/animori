@@ -130,7 +130,7 @@
         </div>
         <h2 class="text-xl font-bold text-[var(--text-primary)]">Invalid Anime ID</h2>
         <p class="text-sm text-[var(--text-muted)] leading-relaxed">
-          The requested anime ID <span class="font-mono text-[var(--text-secondary)]">"{id}"</span> is invalid. Anime IDs must be positive integers from the Kitsu database.
+          The requested anime ID <span class="font-mono text-[var(--text-secondary)]">"{id}"</span> is invalid. Anime IDs must be positive integers.
         </p>
         <div class="pt-2">
           <Button href="/anime" variant="primary" size="md">Browse Anime Catalog</Button>
@@ -198,7 +198,7 @@
         <div class="space-y-2">
           <h2 class="text-2xl font-extrabold text-[var(--text-primary)]">Anime Not Found</h2>
           <p class="text-sm text-[var(--text-muted)] leading-relaxed">
-            We couldn't find an anime with ID <span class="font-mono text-[var(--text-secondary)] font-semibold">#{numericId}</span> in the Kitsu database. It may have been removed or does not exist.
+            We couldn't find an anime with ID <span class="font-mono text-[var(--text-secondary)] font-semibold">#{numericId}</span>. It may have been removed or does not exist.
           </p>
         </div>
         <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">

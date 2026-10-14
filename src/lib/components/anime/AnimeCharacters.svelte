@@ -69,11 +69,11 @@
     </div>
   {:else if error}
     <div class="rounded-2xl p-4 bg-[var(--glass-bg-subtle)] border border-[var(--glass-border)] text-xs text-[var(--text-muted)]">
-      Character information is currently unavailable from the Kitsu API for this title.
+      Character information is currently unavailable for this title.
     </div>
   {:else if characters.length === 0}
     <div class="rounded-2xl p-6 bg-[var(--glass-bg-subtle)] border border-[var(--glass-border)] text-center text-xs text-[var(--text-muted)]">
-      No character or voice actor records found in Kitsu for this anime.
+      No character or voice actor records found for this anime.
     </div>
   {:else}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">

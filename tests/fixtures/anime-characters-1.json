@@ -1,0 +1,153 @@
+{
+  "data": [
+    {
+      "id": "111274",
+      "type": "mediaCharacters",
+      "attributes": {
+        "role": "main",
+        "createdAt": "2018-08-02T18:39:13.037Z"
+      },
+      "relationships": {
+        "character": {
+          "data": { "type": "characters", "id": "1" }
+        },
+        "voices": {
+          "data": [{ "type": "voices", "id": "101" }]
+        }
+      }
+    },
+    {
+      "id": "111275",
+      "type": "mediaCharacters",
+      "attributes": {
+        "role": "main",
+        "createdAt": "2018-08-02T18:39:13.037Z"
+      },
+      "relationships": {
+        "character": {
+          "data": { "type": "characters", "id": "2" }
+        },
+        "voices": {
+          "data": [{ "type": "voices", "id": "102" }]
+        }
+      }
+    },
+    {
+      "id": "111276",
+      "type": "mediaCharacters",
+      "attributes": {
+        "role": "main",
+        "createdAt": "2018-08-02T18:39:13.037Z"
+      },
+      "relationships": {
+        "character": {
+          "data": { "type": "characters", "id": "3" }
+        },
+        "voices": {
+          "data": [{ "type": "voices", "id": "103" }]
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "id": "1",
+      "type": "characters",
+      "attributes": {
+        "name": "Spike Spiegel",
+        "canonicalName": "Spike Spiegel",
+        "names": { "en": "Spike Spiegel" },
+        "image": {
+          "original": "https://media.kitsu.app/characters/images/1/original.jpg",
+          "medium": "https://media.kitsu.app/characters/images/1/medium.jpg"
+        }
+      }
+    },
+    {
+      "id": "2",
+      "type": "characters",
+      "attributes": {
+        "name": "Jet Black",
+        "canonicalName": "Jet Black",
+        "names": { "en": "Jet Black" },
+        "image": {
+          "original": "https://media.kitsu.app/characters/images/2/original.jpg",
+          "medium": "https://media.kitsu.app/characters/images/2/medium.jpg"
+        }
+      }
+    },
+    {
+      "id": "3",
+      "type": "characters",
+      "attributes": {
+        "name": "Faye Valentine",
+        "canonicalName": "Faye Valentine",
+        "names": { "en": "Faye Valentine" },
+        "image": {
+          "original": "https://media.kitsu.app/characters/images/3/original.jpg",
+          "medium": "https://media.kitsu.app/characters/images/3/medium.jpg"
+        }
+      }
+    },
+    {
+      "id": "101",
+      "type": "voices",
+      "attributes": {
+        "locale": "ja_jp"
+      },
+      "relationships": {
+        "person": {
+          "data": { "type": "people", "id": "501" }
+        }
+      }
+    },
+    {
+      "id": "102",
+      "type": "voices",
+      "attributes": {
+        "locale": "ja_jp"
+      },
+      "relationships": {
+        "person": {
+          "data": { "type": "people", "id": "502" }
+        }
+      }
+    },
+    {
+      "id": "103",
+      "type": "voices",
+      "attributes": {
+        "locale": "ja_jp"
+      },
+      "relationships": {
+        "person": {
+          "data": { "type": "people", "id": "503" }
+        }
+      }
+    },
+    {
+      "id": "501",
+      "type": "people",
+      "attributes": {
+        "name": "Kouichi Yamadera",
+        "image": { "medium": "https://media.kitsu.app/people/images/501/medium.jpg" }
+      }
+    },
+    {
+      "id": "502",
+      "type": "people",
+      "attributes": {
+        "name": "Unshou Ishizuka",
+        "image": { "medium": "https://media.kitsu.app/people/images/502/medium.jpg" }
+      }
+    },
+    {
+      "id": "503",
+      "type": "people",
+      "attributes": {
+        "name": "Megumi Hayashibara",
+        "image": { "medium": "https://media.kitsu.app/people/images/503/medium.jpg" }
+      }
+    }
+  ]
+}

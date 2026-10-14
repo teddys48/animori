@@ -1,6 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { setupKitsuMocking } from './helpers/mockKitsu';
 
 test.describe('Animori Phase 2 — Kitsu API & Anime Discovery', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupKitsuMocking(page);
+  });
+
   test('Navbar links navigate to all Phase 2 discovery routes', async ({ page }) => {
     await page.goto('/');
 

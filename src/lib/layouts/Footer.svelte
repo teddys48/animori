@@ -1,6 +1,5 @@
 <script lang="ts">
   import Container from '../components/ui/Container.svelte';
-  import Badge from '../components/ui/Badge.svelte';
 </script>
 
 <footer class="mt-20 border-t border-[var(--glass-border)] bg-[var(--footer-bg)] backdrop-blur-xl relative overflow-hidden max-w-full transition-colors duration-200">
@@ -20,7 +19,6 @@
           <span class="text-xl font-bold tracking-tight text-[var(--text-primary)]">
             Ani<span class="text-[#198754] dark:text-[#20c997]">mori</span>
           </span>
-          <Badge variant="outline" size="sm" class="ml-2">Phase 2</Badge>
         </div>
 
         <p class="text-sm text-[var(--text-muted)] max-w-md leading-relaxed">
@@ -53,39 +51,27 @@
         </ul>
       </div>
 
-      <!-- Col 3: Technical Foundation -->
+      <!-- Col 3: Personal Library Links -->
       <div class="space-y-3">
-        <h4 class="text-xs font-semibold uppercase tracking-wider text-[var(--text-primary)]">Tech Foundation</h4>
+        <h4 class="text-xs font-semibold uppercase tracking-wider text-[var(--text-primary)]">Library & Highlights</h4>
         <ul class="space-y-2 text-sm text-[var(--text-muted)]">
-          <li class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#198754]"></span>
-            <span>Svelte 5 & Vite</span>
-          </li>
-          <li class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#198754] dark:bg-[#20c997]"></span>
-            <span>TypeScript & Bun</span>
-          </li>
-          <li class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-            <span>Dual-Theme Glassmorphism</span>
-          </li>
-          <li class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-            <span>Kitsu JSON:API & Docker</span>
-          </li>
+          <li><a href="/favorites" class="hover:text-[#198754] dark:hover:text-[#20c997] transition-colors">My Favorites</a></li>
+          <li><a href="/watchlist" class="hover:text-[#198754] dark:hover:text-[#20c997] transition-colors">Personal Watchlist</a></li>
+          <li><a href="/top?category=airing" class="hover:text-[#198754] dark:hover:text-[#20c997] transition-colors">Top Airing</a></li>
+          <li><a href="/top?category=movie" class="hover:text-[#198754] dark:hover:text-[#20c997] transition-colors">Top Movies</a></li>
         </ul>
       </div>
     </div>
 
     <!-- Bottom bar -->
     <div class="mt-12 pt-6 border-t border-[var(--glass-border)] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-dim)]">
-      <p>© 2026 Animori. Designed with modern glassmorphism principles.</p>
+      <p>© 2026 Animori. Designed for anime enthusiasts.</p>
       <div class="flex items-center gap-4">
         <span>Dark & Light Themes</span>
         <span>•</span>
-        <span>Accessible Contrast</span>
+        <span>Curated Catalog</span>
         <span>•</span>
-        <span>Responsive Shell</span>
+        <span>Fast & Responsive</span>
       </div>
     </div>
   </Container>

@@ -1,0 +1,9 @@
+{
+  "errors": [
+    {
+      "title": "Record not found",
+      "detail": "The record could not be found",
+      "status": "404"
+    }
+  ]
+}

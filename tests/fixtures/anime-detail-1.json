@@ -1,0 +1,85 @@
+{
+  "data": {
+    "id": "1",
+    "type": "anime",
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/1"
+    },
+    "attributes": {
+      "createdAt": "2013-02-20T16:00:13.609Z",
+      "updatedAt": "2026-10-14T00:00:49.442Z",
+      "slug": "cowboy-bebop",
+      "synopsis": "In the year 2071, humanity has colonized several of the planets and moons of the solar system leaving the now uninhabitable surface of planet Earth behind. The Inter Solar System Police attempts to keep peace in the galaxy, aided in part by outlaw bounty hunters, referred to as \"Cowboys\". The ragtag team aboard the spaceship Bebop are two such individuals.\nMellow and carefree Spike Spiegel is balanced by his boisterous, pragmatic partner Jet Black as the pair makes a living chasing bounties and collecting rewards.",
+      "description": "In the year 2071, humanity has colonized several of the planets and moons of the solar system leaving the now uninhabitable surface of planet Earth behind.",
+      "titles": {
+        "en": "Cowboy Bebop",
+        "en_jp": "Cowboy Bebop",
+        "ja_jp": "カウボーイビバップ"
+      },
+      "canonicalTitle": "Cowboy Bebop",
+      "abbreviatedTitles": ["COWBOY BEBOP"],
+      "averageRating": "82.5",
+      "ratingFrequencies": {
+        "2": "82",
+        "20": "4920"
+      },
+      "userCount": 165000,
+      "favoritesCount": 9200,
+      "startDate": "1998-04-03",
+      "endDate": "1999-04-24",
+      "nextRelease": null,
+      "popularityRank": 38,
+      "ratingRank": 42,
+      "ageRating": "R",
+      "ageRatingGuide": "17+ (violence, profanity)",
+      "subtype": "TV",
+      "status": "finished",
+      "tba": null,
+      "posterImage": {
+        "tiny": "https://media.kitsu.app/anime/poster_images/1/tiny.jpg",
+        "small": "https://media.kitsu.app/anime/poster_images/1/small.jpg",
+        "medium": "https://media.kitsu.app/anime/poster_images/1/medium.jpg",
+        "large": "https://media.kitsu.app/anime/poster_images/1/large.jpg",
+        "original": "https://media.kitsu.app/anime/poster_images/1/original.jpg"
+      },
+      "coverImage": {
+        "tiny": "https://media.kitsu.app/anime/cover_images/1/tiny.jpg",
+        "small": "https://media.kitsu.app/anime/cover_images/1/small.jpg",
+        "large": "https://media.kitsu.app/anime/cover_images/1/large.jpg",
+        "original": "https://media.kitsu.app/anime/cover_images/1/original.jpg"
+      },
+      "episodeCount": 26,
+      "episodeLength": 25,
+      "totalLength": 650,
+      "youtubeVideoId": "qig4KMGW020",
+      "showType": "TV",
+      "nsfw": false
+    }
+  },
+  "included": [
+    {
+      "id": "1",
+      "type": "categories",
+      "attributes": {
+        "title": "Action",
+        "slug": "action"
+      }
+    },
+    {
+      "id": "2",
+      "type": "categories",
+      "attributes": {
+        "title": "Sci-Fi",
+        "slug": "sci-fi"
+      }
+    },
+    {
+      "id": "3",
+      "type": "categories",
+      "attributes": {
+        "title": "Space",
+        "slug": "space"
+      }
+    }
+  ]
+}

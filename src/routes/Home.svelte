@@ -17,8 +17,6 @@
   import { recentStore, recentToAnimeItem } from '../lib/stores/recent.svelte';
   import type { AnimeItem } from '../lib/types/anime';
 
-  // State toggle to demonstrate UI states (Loading, Empty, Error)
-  let previewState = $state<'normal' | 'loading' | 'empty' | 'error'>('normal');
 
   // Spotlight hero anime initialized with valid fallback and upgraded to live Kitsu data
   let heroAnime = $state<AnimeItem>(HERO_FEATURED_ANIME);
@@ -225,95 +223,12 @@
     </Container>
   </section>
 
-  <!-- ==================== UI STATE PREVIEW TOGGLE ==================== -->
-  <section class="border-y border-[var(--glass-border)] py-4 bg-[var(--state-container-bg)] transition-colors duration-200">
-    <Container>
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div class="flex items-center gap-2 text-xs text-[var(--text-muted)]">
-          <svg class="w-4 h-4 text-[#198754] dark:text-[#20c997]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <span class="font-medium text-[var(--text-primary)]">UI Component States:</span>
-          <span>Switch view to inspect built-in states</span>
-        </div>
-
-        <div class="flex items-center gap-1.5 bg-[var(--glass-bg-subtle)] p-1.5 rounded-2xl border border-[var(--glass-border)] backdrop-blur-md shadow-xs">
-          <button
-            type="button"
-            class="px-3 py-1.5 text-xs rounded-xl transition-all duration-200 cursor-pointer {previewState === 'normal' ? 'bg-[#198754] text-white font-medium shadow-xs' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}"
-            onclick={() => (previewState = 'normal')}
-          >
-            Normal View
-          </button>
-          <button
-            type="button"
-            class="px-3 py-1.5 text-xs rounded-xl transition-all duration-200 cursor-pointer {previewState === 'loading' ? 'bg-[#198754] text-white font-medium shadow-xs' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}"
-            onclick={() => (previewState = 'loading')}
-          >
-            Loading Skeleton
-          </button>
-          <button
-            type="button"
-            class="px-3 py-1.5 text-xs rounded-xl transition-all duration-200 cursor-pointer {previewState === 'empty' ? 'bg-[#198754] text-white font-medium shadow-xs' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}"
-            onclick={() => (previewState = 'empty')}
-          >
-            Empty State
-          </button>
-          <button
-            type="button"
-            class="px-3 py-1.5 text-xs rounded-xl transition-all duration-200 cursor-pointer {previewState === 'error' ? 'bg-[#198754] text-white font-medium shadow-xs' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}"
-            onclick={() => (previewState = 'error')}
-          >
-            Error State
-          </button>
-        </div>
-      </div>
-    </Container>
-  </section>
-
-  <!-- ==================== MAIN CONTENT SECTIONS ==================== -->
   <Container class="space-y-16">
-    {#if previewState === 'loading'}
-      <!-- Loading Skeleton Preview -->
-      <section aria-label="Loading skeleton preview">
-        <SectionHeader
-          title="Loading Skeleton State"
-          subtitle="Smooth placeholder skeletons used while fetching data from Kitsu"
-          badge="Demo View"
-        />
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
-          {#each Array(6) as _}
-            <AnimeCardSkeleton />
-          {/each}
-        </div>
-      </section>
-    {:else if previewState === 'empty'}
-      <!-- Empty State Preview -->
-      <section aria-label="Empty state preview" class="py-8">
-        <EmptyState
-          title="No Seasonal Anime Matches"
-          description="We couldn't find any anime in the current database matching your active genre and year filters."
-          actionText="Reset All Filters"
-          onaction={() => (previewState = 'normal')}
-        />
-      </section>
-    {:else if previewState === 'error'}
-      <!-- Error State Preview -->
-      <section aria-label="Error state preview" class="py-8">
-        <ErrorState
-          title="Unable to Connect to Anime Source"
-          message="A network timeout occurred while simulating the data stream. Please check your connectivity and retry."
-          retryText="Retry Simulation"
-          onretry={() => (previewState = 'normal')}
-        />
-      </section>
-    {:else}
       <!-- ==================== SECTION 1: POPULAR ANIME ==================== -->
       <section id="popular" aria-labelledby="section-popular-title">
         <SectionHeader
           title="Popular Anime"
-          subtitle="Top rated masterpieces of all time on Kitsu"
+          subtitle="Top rated anime series of all time"
           badge="Top Rated"
           actionText="View All"
           actionHref="/top"
@@ -389,6 +304,5 @@
           </div>
         </section>
       {/if}
-    {/if}
-  </Container>
+    </Container>
 </div>

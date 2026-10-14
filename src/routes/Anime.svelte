@@ -189,7 +189,7 @@
   <PageHeader
     title={queryParam ? `Search: "${queryParam}"` : 'Anime Catalog'}
     subtitle={queryParam
-      ? `Results from Kitsu anime database for "${queryParam}"`
+      ? `Search results for "${queryParam}"`
       : 'Filter by format, genre, status, season, and sort to discover your next favorite series.'}
     badge={queryParam ? 'Search' : 'Discovery'}
     badgeVariant={queryParam ? 'info' : 'accent'}

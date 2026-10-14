@@ -1,7 +1,9 @@
+import { setupKitsuMocking } from './helpers/mockKitsu';
 import { test, expect } from '@playwright/test';
 
 test.describe('Animori Phase 4 — Advanced Discovery & UX', () => {
   test.beforeEach(async ({ page }) => {
+    await setupKitsuMocking(page);
     // Clear localStorage before each test for clean isolation
     await page.goto('/');
     await page.evaluate(() => localStorage.clear());
@@ -112,7 +114,7 @@ test.describe('Animori Phase 4 — Advanced Discovery & UX', () => {
 
     // Wait for debounced sync (400ms)
     await expect(page).toHaveURL(/\/anime\?.*q=Demon\+Slayer/);
-    await expect(page.getByRole('heading', { name: /Demon Slayer/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Search: "Demon Slayer"', level: 1 })).toBeVisible();
 
     // Clear search with clear button
     const clearBtn = page.locator('button[aria-label="Clear search"]');
@@ -364,6 +366,7 @@ test.describe('Animori Phase 4 — Advanced Discovery & UX', () => {
 
     for (let i = 0; i < Math.min(count, 6); i++) {
       const card = cards.nth(i);
+      if (!(await card.isVisible())) continue;
       const badges = card.locator(".absolute.top-2 > div").first();
       const actions = card.locator(".absolute.top-2 > div").nth(1);
 

@@ -214,7 +214,32 @@ bun run check
 bun run build
 ```
 
-### Run Playwright E2E tests
+### Run Unit Tests (Fast, Headless)
+```bash
+bun run test:unit
+```
+
+### Run Deterministic E2E Tests (Playwright)
+```bash
+bun run test:e2e
+```
+
+### Run E2E Tests with Interactive UI
+```bash
+bun run test:e2e:ui
+```
+
+### Run E2E Tests with Headed Browser
+```bash
+bun run test:e2e:headed
+```
+
+### Run Optional Live API Smoke Test
+```bash
+bun run test:e2e:live
+```
+
+### Run All Tests (Unit + E2E)
 ```bash
 bun run test
 ```

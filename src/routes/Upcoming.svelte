@@ -51,7 +51,7 @@
       skeletonCount={PAGE_SIZE}
       eagerCount={6}
       emptyTitle="No upcoming anime found"
-      emptyDescription="No upcoming titles were returned from the database. Please try again later."
+      emptyDescription="No upcoming anime found. Please check back later."
       label="Upcoming anime releases"
     />
 

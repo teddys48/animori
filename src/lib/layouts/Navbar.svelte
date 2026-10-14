@@ -121,9 +121,6 @@
 
       <!-- Action area: Status Badge + Theme Toggle -->
       <div class="hidden sm:flex items-center gap-2.5 shrink-0">
-        <Badge variant="accent" size="sm">
-          Phase 4
-        </Badge>
         <ThemeToggle />
       </div>
 
@@ -196,7 +193,6 @@
 
       <div class="pt-3 border-t border-[var(--glass-border)] flex items-center justify-between">
         <span class="text-xs text-[var(--text-muted)]">Animori Discovery</span>
-        <Badge variant="accent" size="sm">Phase 4</Badge>
       </div>
     </div>
   {/if}

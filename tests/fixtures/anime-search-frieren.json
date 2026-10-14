@@ -1,0 +1,48 @@
+{
+  "data": [
+    {
+      "id": "46474",
+      "type": "anime",
+      "links": {
+        "self": "https://kitsu.io/api/edge/anime/46474"
+      },
+      "attributes": {
+        "createdAt": "2020-01-01T00:00:00.000Z",
+        "updatedAt": "2026-10-14T00:00:00.000Z",
+        "slug": "frieren-beyond-journey-s-end",
+        "synopsis": "Synopsis for Frieren: Beyond Journey's End. An exciting Japanese animation experience with great characters.",
+        "titles": {
+          "en": "Frieren: Beyond Journey's End",
+          "en_jp": "Frieren: Beyond Journey's End",
+          "ja_jp": "葬送のフリーレン"
+        },
+        "canonicalTitle": "Frieren: Beyond Journey's End",
+        "averageRating": "93.4",
+        "userCount": 150000,
+        "favoritesCount": 8000,
+        "startDate": "2023-09-29",
+        "endDate": "2020-09-30",
+        "popularityRank": 50,
+        "ratingRank": 50,
+        "subtype": "TV",
+        "status": "finished",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/46474/tiny.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/46474/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/46474/medium.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/46474/large.jpg"
+        },
+        "coverImage": {
+          "large": "https://media.kitsu.app/anime/cover_images/46474/large.jpg"
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "showType": "TV"
+      }
+    }
+  ],
+  "meta": {
+    "count": 1
+  },
+  "links": {}
+}
